@@ -1,0 +1,11 @@
+<?php
+namespace Ext\Core;
+
+final class View {
+  public static function render(string $view, array $data=[]): void {
+    extract($data);
+    $viewFile = __DIR__ . '/../View/' . $view . '.php';
+    $layout   = __DIR__ . '/../View/layout.php';
+    include $layout;
+  }
+}
