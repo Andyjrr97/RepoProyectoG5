@@ -1,0 +1,9 @@
+<?php
+namespace Ext\Core;
+
+final class Kernel {
+  public static function run(array $routes): void {
+    $req = new Request();
+    (new Router($routes))->dispatch($req);
+  }
+}
