@@ -18,39 +18,39 @@ USE `tienda`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `carrito`
+-- Table structure for table `carritos`
 --
 
-DROP TABLE IF EXISTS `carrito`;
+DROP TABLE IF EXISTS `carritos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carrito` (
+CREATE TABLE `carritos` (
   `id_carrito` int(11) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) NOT NULL,
+  `ced_usuario` int(11) NOT NULL,
   `fecha` datetime DEFAULT NULL,
   PRIMARY KEY (`id_carrito`),
-  KEY `id_usuario` (`id_usuario`),
-  CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+  KEY `ced_usuario` (`ced_usuario`),
+  CONSTRAINT `carritos_ibfk_1` FOREIGN KEY (`ced_usuario`) REFERENCES `usuarios` (`ced_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carrito`
+-- Dumping data for table `carritos`
 --
 
-LOCK TABLES `carrito` WRITE;
-/*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
-/*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
+LOCK TABLES `carritos` WRITE;
+/*!40000 ALTER TABLE `carritos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `carritos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `categoria`
+-- Table structure for table `categorias`
 --
 
-DROP TABLE IF EXISTS `categoria`;
+DROP TABLE IF EXISTS `categorias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categoria` (
+CREATE TABLE `categorias` (
   `id_categoria` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
@@ -60,23 +60,23 @@ CREATE TABLE `categoria` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `categoria`
+-- Dumping data for table `categorias`
 --
 
-LOCK TABLES `categoria` WRITE;
-/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Celulares','Teléfonos inteligentes y accesorios','Activo'),(2,'Computadoras','Laptops, PC de escritorio, PC Gamer','Activo'),(3,'Accesorios','Cargadores, fundas, auriculares, Teclados y más','Activo'),(4,'Monitores','Pantallas LED y LCD de distintas pulgadas','Activo'),(5,'Componentes','Partes de hardware y actualizaciones','Activo');
-/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
+LOCK TABLES `categorias` WRITE;
+/*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
+INSERT INTO `categorias` VALUES (1,'Celulares','Teléfonos inteligentes y accesorios','Activo'),(2,'Computadoras','Laptops, PC de escritorio, PC Gamer','Activo'),(3,'Accesorios','Cargadores, fundas, auriculares, Teclados y más','Activo'),(4,'Monitores','Pantallas LED y LCD de distintas pulgadas','Activo'),(5,'Componentes','Partes de hardware y actualizaciones','Activo');
+/*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `detalle_carrito`
+-- Table structure for table `detalle_carritos`
 --
 
-DROP TABLE IF EXISTS `detalle_carrito`;
+DROP TABLE IF EXISTS `detalle_carritos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detalle_carrito` (
+CREATE TABLE `detalle_carritos` (
   `id_detalle_carrito` int(11) NOT NULL AUTO_INCREMENT,
   `id_carrito` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
@@ -85,28 +85,28 @@ CREATE TABLE `detalle_carrito` (
   PRIMARY KEY (`id_detalle_carrito`),
   KEY `id_carrito` (`id_carrito`),
   KEY `id_producto` (`id_producto`),
-  CONSTRAINT `detalle_carrito_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`),
-  CONSTRAINT `detalle_carrito_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
+  CONSTRAINT `detalle_carritos_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `carritos` (`id_carrito`),
+  CONSTRAINT `detalle_carritos_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `detalle_carrito`
+-- Dumping data for table `detalle_carritos`
 --
 
-LOCK TABLES `detalle_carrito` WRITE;
-/*!40000 ALTER TABLE `detalle_carrito` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detalle_carrito` ENABLE KEYS */;
+LOCK TABLES `detalle_carritos` WRITE;
+/*!40000 ALTER TABLE `detalle_carritos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_carritos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `detalle_pedido`
+-- Table structure for table `detalle_pedidos`
 --
 
-DROP TABLE IF EXISTS `detalle_pedido`;
+DROP TABLE IF EXISTS `detalle_pedidos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detalle_pedido` (
+CREATE TABLE `detalle_pedidos` (
   `id_detalle_pedido` int(11) NOT NULL AUTO_INCREMENT,
   `id_pedido` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
@@ -116,56 +116,56 @@ CREATE TABLE `detalle_pedido` (
   PRIMARY KEY (`id_detalle_pedido`),
   KEY `id_pedido` (`id_pedido`),
   KEY `id_producto` (`id_producto`),
-  CONSTRAINT `detalle_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
-  CONSTRAINT `detalle_pedido_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`)
+  CONSTRAINT `detalle_pedidos_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`),
+  CONSTRAINT `detalle_pedidos_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `detalle_pedido`
+-- Dumping data for table `detalle_pedidos`
 --
 
-LOCK TABLES `detalle_pedido` WRITE;
-/*!40000 ALTER TABLE `detalle_pedido` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detalle_pedido` ENABLE KEYS */;
+LOCK TABLES `detalle_pedidos` WRITE;
+/*!40000 ALTER TABLE `detalle_pedidos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `pedido`
+-- Table structure for table `pedidos`
 --
 
-DROP TABLE IF EXISTS `pedido`;
+DROP TABLE IF EXISTS `pedidos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pedido` (
+CREATE TABLE `pedidos` (
   `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) NOT NULL,
+  `ced_usuario` int(11) NOT NULL,
   `fecha` datetime DEFAULT NULL,
   `total` decimal(10,2) DEFAULT 0.00,
   `estado` enum('Confirmado','Cancelado') DEFAULT 'Confirmado',
   PRIMARY KEY (`id_pedido`),
-  KEY `id_usuario` (`id_usuario`),
-  CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+  KEY `ced_usuario` (`ced_usuario`),
+  CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`ced_usuario`) REFERENCES `usuarios` (`ced_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pedido`
+-- Dumping data for table `pedidos`
 --
 
-LOCK TABLES `pedido` WRITE;
-/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
+LOCK TABLES `pedidos` WRITE;
+/*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `producto`
+-- Table structure for table `productos`
 --
 
-DROP TABLE IF EXISTS `producto`;
+DROP TABLE IF EXISTS `productos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `producto` (
+CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
@@ -175,50 +175,50 @@ CREATE TABLE `producto` (
   `id_categoria` int(11) NOT NULL,
   PRIMARY KEY (`id_producto`),
   KEY `id_categoria` (`id_categoria`),
-  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`)
+  CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `producto`
+-- Dumping data for table `productos`
 --
 
-LOCK TABLES `producto` WRITE;
-/*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (1,'iPhone 14','128GB, Color Blanco',899.99,12,'Activo',1),(2,'Samsung Galaxy S23','256GB, Color Negro',600.99,5,'Activo',1),(3,'Xiaomi Redmi Note 12','128GB, Color Azul',299.99,15,'Activo',1),(4,'Huawei P60 Pro','256GB, Color Plata',749.99,5,'Activo',1),(5,'Motorola Edge 40','256GB, Color Negro',599.99,4,'Activo',1),(6,'Laptop HP Pavilion','15.6 pulgadas, Intel i5, 8GB RAM',650.00,6,'Activo',2),(7,'Asus TUF Gaming F15','Intel i7, RTX 3050, 16GB RAM',1199.99,4,'Activo',2),(8,'MacBook Air M2','13 pulgadas, 256GB SSD',1249.00,3,'Activo',2),(9,'Lenovo IdeaPad 3','AMD Ryzen 5, 8GB RAM, 512GB SSD',499.00,7,'Activo',2),(10,'Acer Aspire 5','Intel i5, 12GB RAM, 512GB SSD',579.00,10,'Activo',2),(11,'Cargador USB-C','20W original universal',19.99,30,'Activo',3),(12,'Audífonos Bluetooth JBL','Sonido Pure Bass',49.99,20,'Activo',3),(13,'Mouse Logitech M170','Inalámbrico color negro',15.99,25,'Activo',3),(14,'Teclado Mecánico Redragon','Switch rojo retroiluminado',69.99,10,'Activo',3),(15,'Cable HDMI 2.1','1.5 metros, 8K compatible',12.99,40,'Activo',3),(16,'Monitor LG 24\"','Full HD, panel IPS',149.99,5,'Activo',4),(17,'Monitor Samsung 27\"','Curvo, 144Hz',299.99,6,'Activo',4),(18,'Tarjeta Gráfica RTX 4060','NVIDIA 8GB GDDR6',499.99,2,'Activo',5),(19,'Memoria RAM 16GB DDR4','3200MHz Kingston',69.99,20,'Activo',5),(20,'Disco SSD 1TB','Samsung EVO 870 SATA',119.99,15,'Activo',5);
-/*!40000 ALTER TABLE `producto` ENABLE KEYS */;
+LOCK TABLES `productos` WRITE;
+/*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+INSERT INTO `productos` VALUES (1,'iPhone 14','128GB, Color Blanco',899.99,12,'Activo',1),(2,'Samsung Galaxy S23','256GB, Color Negro',600.99,5,'Activo',1),(3,'Xiaomi Redmi Note 12','128GB, Color Azul',299.99,15,'Activo',1),(4,'Huawei P60 Pro','256GB, Color Plata',749.99,5,'Activo',1),(5,'Motorola Edge 40','256GB, Color Negro',599.99,4,'Activo',1),(6,'Laptop HP Pavilion','15.6 pulgadas, Intel i5, 8GB RAM',650.00,6,'Activo',2),(7,'Asus TUF Gaming F15','Intel i7, RTX 3050, 16GB RAM',1199.99,4,'Activo',2),(8,'MacBook Air M2','13 pulgadas, 256GB SSD',1249.00,3,'Activo',2),(9,'Lenovo IdeaPad 3','AMD Ryzen 5, 8GB RAM, 512GB SSD',499.00,7,'Activo',2),(10,'Acer Aspire 5','Intel i5, 12GB RAM, 512GB SSD',579.00,10,'Activo',2),(11,'Cargador USB-C','20W original universal',19.99,30,'Activo',3),(12,'Audífonos Bluetooth JBL','Sonido Pure Bass',49.99,20,'Activo',3),(13,'Mouse Logitech M170','Inalámbrico color negro',15.99,25,'Activo',3),(14,'Teclado Mecánico Redragon','Switch rojo retroiluminado',69.99,10,'Activo',3),(15,'Cable HDMI 2.1','1.5 metros, 8K compatible',12.99,40,'Activo',3),(16,'Monitor LG 24\"','Full HD, panel IPS',149.99,5,'Activo',4),(17,'Monitor Samsung 27\"','Curvo, 144Hz',299.99,6,'Activo',4),(18,'Tarjeta Gráfica RTX 4060','NVIDIA 8GB GDDR6',499.99,2,'Activo',5),(19,'Memoria RAM 16GB DDR4','3200MHz Kingston',69.99,20,'Activo',5),(20,'Disco SSD 1TB','Samsung EVO 870 SATA',119.99,15,'Activo',5);
+/*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `usuario`
+-- Table structure for table `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuario`;
+DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuario` (
-  `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(30) NOT NULL,
-  `apellido1` varchar(20) NOT NULL,
-  `apellido2` varchar(20) DEFAULT NULL,
+CREATE TABLE `usuarios` (
+  `ced_usuario` int(9) NOT NULL,
+  `nombre` varchar(15) NOT NULL,
+  `apellido1` varchar(30) NOT NULL,
+  `apellido2` varchar(30) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `correo` varchar(50) NOT NULL,
   `contrasena` varchar(60) NOT NULL,
   `rol` enum('Cliente','Administrador') DEFAULT 'Cliente',
   `estado` enum('Activo','Inactivo') DEFAULT 'Activo',
-  PRIMARY KEY (`id_usuario`),
+  PRIMARY KEY (`ced_usuario`),
   UNIQUE KEY `correo` (`correo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuario`
+-- Dumping data for table `usuarios`
 --
 
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Andy','Rodríguez','Rodríguez','8888-8820','andy@mail.com','1234','Administrador','Activo'),(2,'Luis','Ugalde','Castrillo','8888-2882','luis@mail.com','1234','Cliente','Activo'),(3,'Carlos','Salas','Alpízar','8888-3342','carlos@mail.com','1234','Cliente','Activo'),(4,'Andres','Bonilla','Castro','8888-7894','ronny@mail.com','1234','Cliente','Activo'),(5,'Jorge','Víquez','Espinoza','8888-7585','jorge@mail.com','1234','Administrador','Activo');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (116770298,'Andy','Rodríguez','Rodríguez','8888-8820','andy@mail.com','1234','Administrador','Activo'),(117500254,'Luis','Ugalde','Castrillo','8888-2882','luis@mail.com','1234','Cliente','Activo'),(189750359,'Carlos','Salas','Alpízar','8888-3342','carlos@mail.com','1234','Cliente','Activo'),(307890147,'Jorge','Víquez','Espinoza','8888-7585','jorge@mail.com','1234','Administrador','Activo'),(357800871,'Andres','Bonilla','Castro','8888-7894','ronny@mail.com','1234','Cliente','Activo');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -234,4 +234,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-01 15:08:57
+-- Dump completed on 2025-11-05 17:00:36
