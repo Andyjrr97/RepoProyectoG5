@@ -41,6 +41,8 @@
         $_SESSION["ced_usuario"] = $resultado["ced_usuario"];
         $_SESSION["correo"] = $resultado["correo"];
         $_SESSION["nombre"] = $resultado["nombre"];
+        $_SESSION["apellido1"] = $resultado["apellido1"];
+        $_SESSION["rol"] = $resultado["rol"];
 
         header("Location: ../../View/Inicio/Principal.php");
         exit;

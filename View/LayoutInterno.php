@@ -1,168 +1,290 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/InicioController.php';
 
-    if(session_status() == PHP_SESSION_NONE)
-    {
-        session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION["ced_usuario"])) {
+    header("Location: ../../View/Inicio/IniciarSesion.php?e=sesion");
+    exit;
+}
+
+function ShowCSS()
+{
+    echo '
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Élite Electrónica</title>
+        <link rel="stylesheet" href="../../View/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="../../View/css/vendor.bundle.base.css">
+        <link rel="stylesheet" href="../../View/css/style.css">
+        <link rel="shortcut icon" href="../../View/imagenes/faviconi.png" />
+
+        <style>
+            .main-panel .content-wrapper {
+                background: url("../imagenes/tecnologia_gamer.png") center/cover no-repeat;
+                min-height: calc(100vh - 70px);   /* para que la imagen cubra bien */
+            }
+
+            .sidebar {
+                background-color: #02003d;
+            }
+
+            .sidebar .sidebar-brand-wrapper {
+                background-color: #02003d !important;
+            }
+
+            .navbar,
+            .navbar-brand-wrapper {
+                background-color: #02003d !important;
+            }
+
+            .footer {
+                background-color: #02003d;   /* mismo azul del layout */
+                color: #ffffff;
+                border-top: 1px solid #060a2e;
+                padding: 8px 1.5rem;
+            }
+
+            .sidebar .sidebar-brand-wrapper .sidebar-brand img {
+                width: 210px;
+                height: auto;
+                max-height: none;
+            }
+
+            .sidebar .sidebar-brand-wrapper .brand-logo-mini img {
+                width: 40px !important;
+                height: auto !important;
+            }
+        </style>
+    </head>';
+}
+
+function ShowJS()
+{
+    echo '
+    <script src="../../View/js/vendor.bundle.base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="../../View/js/off-canvas.js"></script>
+    <script src="../../View/js/hoverable-collapse.js"></script>
+    <script src="../../View/js/misc.js"></script>
+    <script src="../../View/js/settings.js"></script>
+    <script src="../../View/js/todolist.js"></script>';
+}
+
+function ShowMenu()
+{
+    $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
+
+    $avatar = "../imagenes/Cliente.png";
+
+    if ($rol === "Administrador") {
+        $avatar = "../imagenes/admin.png";
     }
 
-    function ShowCSS()
-    {
-      echo '
-        <head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-          <title>Proyecto Web MN</title>
-          <meta name="description" content="" />
+    $nombre     = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
+    $apellido1  = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
+    $nombreCompleto = trim($nombre . ' ' . $apellido1);
 
-          <link rel="stylesheet" href="../css/boxicons.css" />
-          <link rel="stylesheet" href="../css/core.css" class="template-customizer-core-css" />
-          <link rel="stylesheet" href="../css/theme-default.css" class="template-customizer-theme-css" />
-          <link rel="stylesheet" href="../css/demo.css" />
-          <link rel="stylesheet" href="../css/perfect-scrollbar.css" />
-          <script src="../js/helpers.js"></script>
-          <script src="../js/config.js"></script>
-        </head>';
-    }
+    $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
 
-    function ShowJS()
-    {
-      echo '
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-        <script src="../js/popper.js"></script>
-        <script src="../js/bootstrap.js"></script>
-        <script src="../js/perfect-scrollbar.js"></script>
-        <script src="../js/menu.js"></script>
-        <script src="../js/main.js"></script>
-        <script async defer src="https://buttons.github.io/buttons.js"></script>';
-    }
-
-    function ShowMenu()
-    {
-        echo '
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
-              <img src="../img/logo.png">
-              <span class="app-brand-text demo menu-text fw-bolder ms-2">MN Web</span>
+    echo '
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+            <!-- Logo normal (sidebar completo) -->
+            <a class="sidebar-brand brand-logo" href="/RepoProyectoG5/View/Inicio/Principal.php">
+                <img src="../imagenes/logo_elite.png" alt="logo" />
             </a>
 
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            <!-- Logo mini (cuando el sidebar está colapsado) -->
+            <a class="sidebar-brand brand-logo-mini" href="/RepoProyectoG5/View/Inicio/Principal.php">
+                <img src="../imagenes/logo_mini_elite.png" alt="logo mini" />
             </a>
-          </div>
+        </div>
 
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Mantenimientos</span></li>
-
-            <li class="menu-item">
-              <a href="../Productos/Productos.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="Analytics">Productos</div>
-              </a>
+        <ul class="nav">
+            <li class="nav-item profile">
+                <div class="profile-desc">
+                    <div class="profile-pic">
+                        <div>
+                            <img class="img-xs rounded-circle" src="'.$avatar.'" alt="avatar" style="width: 50px; height: 50px; border-radius: 50%;">
+                            <span class="count bg-success"></span>
+                        </div>
+                        <div class="profile-name">
+                            <h4 class="mb-0 font-weight-normal">'.$nombreCompleto.'</h4>
+                            <span>'.$rol.'</span>
+                        </div>
+                    </div>
+                </div>
             </li>
 
-          </ul>
-        </aside>';
-    }
+            <li class="nav-item nav-category">
+                <span class="nav-link">Navigation</span>
+            </li>
 
-    function ShowNav()
-    {
-        $nombre = "";
-        $nombrePerfil = "";
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="../../index.html">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-speedometer"></i>
+                    </span>
+                    <span class="menu-title">Pc de Alta Gama</span>
+                </a>
+            </li>
 
-        if(isset($_SESSION["Nombre"]))
-        {
-          $nombre = $_SESSION["Nombre"];
-          $nombrePerfil = $_SESSION["NombrePerfil"];
-        }
-
-        echo '
-         <nav
-            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-            id="layout-navbar">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                <i class="bx bx-menu bx-sm"></i>
-              </a>
-            </div>
-
-            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item d-flex align-items-center">
-                  <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."
-                  />
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-laptop"></i>
+                    </span>
+                    <span class="menu-title">Computadoras</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-basic">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../pages/ui-features/buttons.html">Laptops</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../pages/ui-features/dropdowns.html">Monitores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../pages/ui-features/typography.html">PC Gamer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../pages/ui-features/dropdowns.html">Teclados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../pages/ui-features/typography.html">Otros Componentes</a>
+                        </li>
+                    </ul>
                 </div>
-              </div>
+            </li>
 
-              <ul class="navbar-nav flex-row align-items-center ms-auto">
-                
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">' . $nombre . '
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <div class="d-flex">
-                          <div class="flex-grow-1">
-                            <span class="fw-semibold d-block text-center">Perfil ' . $nombrePerfil . '</span>
-                          </div>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="../../pages/forms/basic_elements.html">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Telefonos</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="../../pages/tables/basic-table.html">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-table-large"></i>
+                    </span>
+                    <span class="menu-title">Tables</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="../../pages/charts/chartjs.html">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-chart-bar"></i>
+                    </span>
+                    <span class="menu-title">Lo mas Vendido</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="../../pages/icons/mdi.html">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-contacts"></i>
+                    </span>
+                    <span class="menu-title">Contactenos</span>
+                </a>
+            </li>
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-security"></i>
+                    </span>
+                    <span class="menu-title">Sobre Nosotros</span>
+                </a>
+            </li>
+        </ul>
+    </nav>';
+}
+
+
+
+function ShowNav()
+{
+  $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
+
+    $avatar = "../imagenes/Cliente.png";
+
+    if ($rol === "Administrador") {
+        $avatar = "../imagenes/admin.png";
+    }
+
+    $nombre     = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
+    $apellido1  = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
+    $nombreCompleto = trim($nombre . ' ' . $apellido1);
+
+    echo '
+    <nav class="navbar p-0 fixed-top d-flex flex-row">
+        <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo-mini" href="/RepoProyectoG5/View/Inicio/Principal.php">
+                <img src="../imagenes/logo_mini_elite.png" alt="logo" />
+            </a>
+        </div>
+
+        <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="mdi mdi-menu"></span>
+            </button>
+
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                        <div class="navbar-profile">
+                            <img class="img-xs rounded-circle" src="'.$avatar.'" alt="avatar" style="width: 50px; height: 50px; border-radius: 50%;">
+                            <p class="mb-0 d-none d-sm-block navbar-profile-name">'.$nombreCompleto.'</p>
+                            <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                         </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="../Usuarios/Perfil.php">
-                        <i class="bx bx-user me-2"></i>
-                        <span class="align-middle">Perfil</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="../Usuarios/Seguridad.php">
-                        <i class="bx bx-cog me-2"></i>
-                        <span class="align-middle">Seguridad</span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown-divider"></div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
-                        <i class="bx bx-power-off me-2"></i>
-                        <span class="align-middle">Cerrar Sesión</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </nav>';
-    }
+                    </a>
 
-    function ShowFooter()
-    {
-        echo '
-        <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  ThemeSelection
-                </div>               
-              </div>
-            </footer>';
-    }
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                        aria-labelledby="profileDropdown">
+                        <h6 class="p-3 mb-0">Perfil</h6>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-settings text-success"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">Configuraciones</p>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item preview-item" href="../../Controller/LogoutMainPage.php">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-logout text-danger"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">Salir</p>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+        </div>
+    </nav>';
+}
 
 ?>

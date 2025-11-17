@@ -7,7 +7,7 @@
 <html lang="en">
 
   <?php
-      ShowCSS()
+      ShowCSS();
   ?>
 
   <body>
@@ -15,13 +15,12 @@
       <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="row w-100 m-0">
           <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-            <div class="card col-lg-4 mx-auto">
-              <div class="card-body px-5 py-5">
-                <h3 class="card-title text-left mb-3">Inicio de sesión</h3>
+            <div class="card col-lg-5 mx-auto">
+              <div class="card-body px-6 py-6">
+                <h3 class="card-title text-left mb-4">Inicio de sesión</h3>
               
                 <?php
-                if(isset($_POST["Mensaje"]))
-                {
+                if (isset($_POST["Mensaje"])) {
                     echo '<div class="alert alert-primary centrado">' . $_POST["Mensaje"] . '</div>';
                 }
                 ?>
@@ -58,7 +57,7 @@
     </div>
 
     <?php
-      ShowJS()
+      ShowJS();
     ?>
     <script src="../js/InicioSesion.js"></script>
 

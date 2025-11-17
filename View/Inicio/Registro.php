@@ -15,7 +15,7 @@
       <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="row w-100 m-0">
           <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-            <div class="card col-lg-4 mx-auto">
+            <div class="card col-lg-5 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-left mb-3">Registro</h3>
 
@@ -56,13 +56,10 @@
                     <input type="password" class="form-control p_input" id="contrasena" name="contrasena" required>
                   </div>
 
-                  <div class="form-group d-flex align-items-center justify-content-between">
-                    <div class="form-check">
                   <div class="text-center">
-
                     <button type="submit" id="btnCrearCuenta" name="btnCrearCuenta" class="btn btn-primary btn-block enter-btn">Crear Cuenta</button>
-
                   </div>
+
                   <p class="sign-up mt-3" style="margin-top: -20px;">¿Ya tienes una cuenta? <a href="IniciarSesion.php">Iniciar Sesión</a></p>
 
                 </form>
