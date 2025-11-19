@@ -1,26 +1,34 @@
 <?php
 
-    function OpenConnection()
-    {
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        return mysqli_connect("127.0.0.1:3307", "root", "", "tienda");
-    }
+function OpenConnection()
+{
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    function CloseConnection($context)
-    {
-        mysqli_close($context);
-    }
+    $SERVER = "127.0.0.1";
+    $USUARIO = "root";
+    $CONTRASENA = "";
+    $BASE_DATOS = "tienda";
+    $PUERTO = 3306; //cambiar el puerto al que usa XAMPP
 
-    function SaveError($error)
-    {
-        $context = OpenConnection();
+    return mysqli_connect($SERVER, $USUARIO, $CONTRASENA, $BASE_DATOS, $PUERTO);
+}
 
-        $mensaje = mysqli_real_escape_string($context, $error -> getMessage());
+function CloseConnection($context)
+{
+    mysqli_close($context);
+}
 
-        $sentencia = "CALL RegistrarError('$mensaje')";
-        $context -> query($sentencia);
 
-        CloseConnection($context);
-    }
+function SaveError($error)
+{
+    $context = OpenConnection();
+
+    $mensaje = mysqli_real_escape_string($context, $error->getMessage());
+
+    $sentencia = "CALL RegistrarError('$mensaje')";
+    $context->query($sentencia);
+
+    CloseConnection($context);
+}
 
 ?>

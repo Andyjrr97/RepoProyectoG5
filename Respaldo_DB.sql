@@ -189,6 +189,29 @@ INSERT INTO `productos` VALUES (1,'iPhone 14','128GB, Color Blanco',899.99,12,'A
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+CREATE TABLE errores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mensaje TEXT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+DELIMITER $$
+
+CREATE PROCEDURE RegistrarError(
+    IN p_mensaje TEXT
+)
+BEGIN
+    INSERT INTO errores (mensaje)
+    VALUES (p_mensaje);
+END $$
+
+DELIMITER ;
+
+
+
+
 --
 -- Table structure for table `usuarios`
 --
