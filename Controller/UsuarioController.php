@@ -15,15 +15,22 @@
     if(isset($_POST["btnActualizarPerfil"]))
     {
         $ced_usuario = $_SESSION["ced_usuario"];
-        $identificacion = $_POST["Identificacion"];
-        $nombre = $_POST["Nombre"];
-        $correoElectronico = $_POST["CorreoElectronico"];
+        $nombre     = $_POST["Nombre"];
+        $apellido1  = $_POST["Apellido1"];
+        $apellido2  = $_POST["Apellido2"];
+        $telefono   = $_POST["Telefono"];
+        $correo     = $_POST["Correo"];
 
-        $resultado = ActualizarPerfilModel($ced_usuario, $identificacion,$nombre,$correoElectronico);
+        $resultado = ActualizarPerfilModel($ced_usuario, $nombre, $apellido1, $apellido2, $telefono, $correo);
 
         if($resultado)
         {
-            $_SESSION["Nombre"] = $nombre;
+            $_SESSION["nombre"]   = $nombre;
+            $_SESSION["apellido1"] = $apellido1;
+            $_SESSION["apellido2"] = $apellido2;
+            $_SESSION["telefono"]  = $telefono;
+            $_SESSION["correo"]    = $correo;
+
             $_POST["Mensaje"] = "La información se actualizó correctamente";
         }
         else
@@ -34,19 +41,37 @@
 
     if(isset($_POST["btnActualizarSeguridad"]))
     {
-        $ced_usuario = $_SESSION["ced_usuario"];
-        $contrasenna = $_POST["Contrasenna"];
+        $ced_usuario       = $_SESSION["ced_usuario"];
+        $contrasennaActual = $_POST["ContrasennaActual"] ?? "";
+        $contrasennaNueva  = $_POST["ContrasennaNueva"] ?? "";
+        $confirmar         = $_POST["ConfirmarContrasenna"] ?? "";
 
-        $resultado = ActualizarSeguridadModel($ced_usuario, $contrasenna);
-
-        if($resultado)
-        {
-            $_POST["Mensaje"] = "La información se actualizó correctamente";
+        if (empty($contrasennaActual) || empty($contrasennaNueva) || empty($confirmar)) {
+            $_POST["MensajeSeguridad"] = "Debe completar todos los campos.";
         }
-        else
-        {
-            $_POST["Mensaje"] = "La información no se actualizó correctamente";
-        }        
-    }   
+        elseif ($contrasennaNueva !== $confirmar) {
+            $_POST["MensajeSeguridad"] = "La nueva contraseña y la confirmación no coinciden.";
+        }
+        else {
+            $usuario = ConsultarUsuarioModel($ced_usuario);
 
-?>
+            if (!$usuario) {
+                $_POST["MensajeSeguridad"] = "No se encontró la información del usuario.";
+            }
+            elseif ($usuario["contrasena"] !== $contrasennaActual) {
+                $_POST["MensajeSeguridad"] = "La contraseña actual no es correcta.";
+            }
+            else {
+                $resultado = ActualizarSeguridadModel($ced_usuario, $contrasennaNueva);
+
+                if($resultado)
+                {
+                    $_POST["MensajeSeguridad"] = "La contraseña se actualizó correctamente.";
+                }
+                else
+                {
+                    $_POST["MensajeSeguridad"] = "Ocurrió un error al actualizar la contraseña.";
+                }
+            }
+        }
+    }

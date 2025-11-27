@@ -12,7 +12,7 @@ if (!isset($_SESSION["ced_usuario"])) {
 
 function ShowCSS()
 {
-    echo '
+    ?>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,9 +23,21 @@ function ShowCSS()
         <link rel="shortcut icon" href="../../View/imagenes/faviconi.png" />
 
         <style>
+            /* Carga correcta de las fuentes Rubik desde /View/fonts/ */
+            @font-face {
+                font-family: 'Rubik';
+                src: url('../fonts/Rubik-Light.ttf') format('truetype');
+                font-weight: 300;
+            }
+            @font-face {
+                font-family: 'Rubik';
+                src: url('../fonts/Rubik-Bold.ttf') format('truetype');
+                font-weight: 700;
+            }
+
             .main-panel .content-wrapper {
                 background: url("../imagenes/tecnologia_gamer.png") center/cover no-repeat;
-                min-height: calc(100vh - 70px);   /* para que la imagen cubra bien */
+                min-height: calc(100vh - 70px); 
             }
 
             .sidebar {
@@ -58,9 +70,42 @@ function ShowCSS()
                 width: 40px !important;
                 height: auto !important;
             }
+
+            /* Botón cambiar contraseña */
+            .btn-change-pass {
+                background: linear-gradient(90deg, #4400ffff, #5b53ccff);
+                color: white;
+                padding: 12px 35px;
+                font-size: 18px;
+                font-weight: bold;
+                border-radius: 8px;
+                border: none;
+                transition: 0.3s;
+                box-shadow: 0 4px 12px rgba(0, 4, 255, 0.3);
+            }
+
+            .btn-change-pass:hover {
+                background: linear-gradient(90deg, #ff0000ff, #f04a4aff);
+                box-shadow: 0 6px 18px rgba(255, 0, 0, 1);
+                transform: translateY(-2px);
+            }
+
+            .btn-change-pass:active {
+                transform: scale(0.97);
+            }
+
+            /* Estilo para input deshabilitado (cédula usuario, etc.) */
+            input.form-control[disabled] {
+                background-color: #5e5e5eff !important;
+                color: #2e1fffff !important;
+                border: 1px solid #0004ffff !important;
+                opacity: 1 !important;
+            }
         </style>
-    </head>';
+    </head>
+    <?php
 }
+
 
 function ShowJS()
 {
@@ -86,7 +131,7 @@ function ShowMenu()
 
     $nombre     = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
     $apellido1  = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
-    $nombreCompleto = trim($nombre . ' ' . $apellido1);
+    $nombreCompleto = trim($nombre . " " . $apellido1);
 
     $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
 
@@ -134,8 +179,7 @@ function ShowMenu()
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                    aria-controls="ui-basic">
+                <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                     <span class="menu-icon">
                         <i class="mdi mdi-laptop"></i>
                     </span>
@@ -211,11 +255,9 @@ function ShowMenu()
     </nav>';
 }
 
-
-
 function ShowNav()
 {
-  $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
+    $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
 
     $avatar = "../imagenes/Cliente.png";
 
@@ -225,7 +267,7 @@ function ShowNav()
 
     $nombre     = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
     $apellido1  = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
-    $nombreCompleto = trim($nombre . ' ' . $apellido1);
+    $nombreCompleto = trim($nombre . " " . $apellido1);
 
     echo '
     <nav class="navbar p-0 fixed-top d-flex flex-row">
@@ -250,18 +292,17 @@ function ShowNav()
                         </div>
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                        aria-labelledby="profileDropdown">
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
                         <h6 class="p-3 mb-0">Perfil</h6>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
+                        <a class="dropdown-item preview-item" href="../../View/Configuracion/Usuarios.php">
                             <div class="preview-thumbnail">
                                 <div class="preview-icon bg-dark rounded-circle">
                                     <i class="mdi mdi-settings text-success"></i>
                                 </div>
                             </div>
                             <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Configuraciones</p>
+                                <p class="preview-subject mb-1">Configuracion</p>
                             </div>
                         </a>
                         <div class="dropdown-divider"></div>
@@ -279,12 +320,10 @@ function ShowNav()
                 </li>
             </ul>
 
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-                data-toggle="offcanvas">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                 <span class="mdi mdi-format-line-spacing"></span>
             </button>
         </div>
     </nav>';
 }
-
 ?>
