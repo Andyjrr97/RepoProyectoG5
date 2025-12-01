@@ -31,11 +31,11 @@
             $_SESSION["telefono"]  = $telefono;
             $_SESSION["correo"]    = $correo;
 
-            $_POST["Mensaje"] = "La información se actualizó correctamente";
+            $_POST["MensajePerfil"] = "La información se actualizó correctamente";
         }
         else
         {
-            $_POST["Mensaje"] = "La información no se actualizó correctamente";
+            $_POST["MensajePerfil"] = "La información no se actualizó correctamente";
         }        
     }
 

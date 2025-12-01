@@ -17,10 +17,10 @@
         require 'PHPMailer/src/PHPMailer.php';
         require 'PHPMailer/src/SMTP.php';
 
-        $correoSalida = "ecalvo90415@ufide.ac.cr";
-        $contrasennaSalida = "";
+        $correoSalida = "arodriguez70298@ufide.ac.cr";
+        $contrasenaSalida = "@Jrr1997";
 
-        if($contrasennaSalida == "")
+        if($contrasenaSalida == "")
         {
             return true; // Envío exitoso
         }
@@ -35,7 +35,7 @@
         $mail -> Port = 587;                      
         $mail -> SMTPAuth = true;
         $mail -> Username = $correoSalida;               
-        $mail -> Password = $contrasennaSalida;                                
+        $mail -> Password = $contrasenaSalida;                                
         
         $mail -> SetFrom($correoSalida);
         $mail -> Subject = $asunto;

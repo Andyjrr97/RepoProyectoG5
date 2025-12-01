@@ -1,13 +1,13 @@
 <?php
     include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Model/UtilesModel.php';
 
-    function ConsultarUsuarioModel($cedula)
+    function ConsultarUsuarioModel($ced_usuario)
     {
         try
         {
             $context = OpenConnection();
 
-            $sentencia = "CALL ConsultarUsuario('$cedula')";
+            $sentencia = "CALL ConsultarUsuario('$ced_usuario')";
             $resultado = $context->query($sentencia);
 
             $datos = null;
@@ -28,13 +28,13 @@
         }
     }
 
-    function ActualizarPerfilModel($cedula, $nombre, $apellido1, $apellido2, $telefono, $correo)
+    function ActualizarPerfilModel($ced_usuario, $nombre, $apellido1, $apellido2, $telefono, $correo)
     {
         try
         {
             $context = OpenConnection();
 
-            $sentencia = "CALL ActualizarPerfil('$cedula', '$nombre', '$apellido1', '$apellido2', '$telefono', '$correo')";
+            $sentencia = "CALL ActualizarPerfil('$ced_usuario', '$nombre', '$apellido1', '$apellido2', '$telefono', '$correo')";
             $resultado = $context->query($sentencia);
 
             CloseConnection($context);
@@ -47,13 +47,13 @@
         }
     }
 
-    function ActualizarSeguridadModel($cedula, $contrasena)
+    function ActualizarSeguridadModel($ced_usuario, $contrasena)
     {
         try
         {
             $context = OpenConnection();
 
-            $sentencia = "CALL ActualizarContrasenna('$cedula', '$contrasena')";
+            $sentencia = "CALL ActualizarContrasenna('$ced_usuario', '$contrasena')";
             $resultado = $context->query($sentencia);
 
             CloseConnection($context);

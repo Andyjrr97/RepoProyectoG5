@@ -52,7 +52,7 @@
 
     if(isset($_POST["btnRecuperarAcceso"]))
     {
-        $correoElectronico = $_POST["correo"];
+        $correo = $_POST["correo"];
  
         $resultado = ValidarCorreoModel($correo);
 

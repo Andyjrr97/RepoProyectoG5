@@ -181,7 +181,7 @@
 
         </div>
 
-        <footer class="footer">...</footer>
+        <?php ShowFooter(); ?>
 
       </div>
     </div>

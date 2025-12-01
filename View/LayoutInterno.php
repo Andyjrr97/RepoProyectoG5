@@ -170,87 +170,77 @@ function ShowMenu()
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="../../index.html">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-speedometer"></i>
-                    </span>
-                    <span class="menu-title">Pc de Alta Gama</span>
-                </a>
-            </li>
-
-            <li class="nav-item menu-items">
-                <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/Computadoras.php">
                     <span class="menu-icon">
                         <i class="mdi mdi-laptop"></i>
                     </span>
                     <span class="menu-title">Computadoras</span>
-                    <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="ui-basic">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../../pages/ui-features/buttons.html">Laptops</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../../pages/ui-features/dropdowns.html">Monitores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../../pages/ui-features/typography.html">PC Gamer</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../../pages/ui-features/dropdowns.html">Teclados</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../../pages/ui-features/typography.html">Otros Componentes</a>
-                        </li>
-                    </ul>
-                </div>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="../../pages/forms/basic_elements.html">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/Telefonos.php">
                     <span class="menu-icon">
-                        <i class="mdi mdi-playlist-play"></i>
+                        <i class="mdi mdi-cellphone"></i>
                     </span>
                     <span class="menu-title">Telefonos</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="../../pages/tables/basic-table.html">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/Componentes.php">
                     <span class="menu-icon">
-                        <i class="mdi mdi-table-large"></i>
+                        <i class="mdi mdi-memory"></i>
                     </span>
-                    <span class="menu-title">Tables</span>
+                    <span class="menu-title">Componentes</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="../../pages/charts/chartjs.html">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/Accesorios.php">
                     <span class="menu-icon">
-                        <i class="mdi mdi-chart-bar"></i>
+                        <i class="mdi mdi-headphones"></i>
+                    </span>
+                    <span class="menu-title">Accesorios</span>
+                </a>
+            </li>
+         
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/Monitores.php">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-monitor"></i>
+                    </span>
+                    <span class="menu-title">Monitores</span>
+                </a>
+            </li>            
+
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/Vendidos.php">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-trending-up"></i>
                     </span>
                     <span class="menu-title">Lo mas Vendido</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" href="../../pages/icons/mdi.html">
+                <a class="nav-link" href="/RepoProyectoG5/View/info/Contactenos.php">
                     <span class="menu-icon">
-                        <i class="mdi mdi-contacts"></i>
+                        <i class="mdi mdi-phone"></i>
                     </span>
                     <span class="menu-title">Contactenos</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
-                <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <a class="nav-link" href="/RepoProyectoG5/View/info/SobreNosotros.php">
                     <span class="menu-icon">
-                        <i class="mdi mdi-security"></i>
+                        <i class="mdi mdi-information"></i>
                     </span>
                     <span class="menu-title">Sobre Nosotros</span>
                 </a>
             </li>
+
         </ul>
     </nav>';
 }
@@ -326,4 +316,12 @@ function ShowNav()
         </div>
     </nav>';
 }
+
+function ShowFooter()
+{ 
+    echo '
+    <footer class="footer text-center">
+        <span class="text-muted d-block">© 2025 Élite Electrónica. Todos los derechos reservados.</span>
+    </footer>';
+            }
 ?>
