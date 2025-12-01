@@ -21,6 +21,7 @@ function ShowCSS()
         <link rel="stylesheet" href="../../View/css/vendor.bundle.base.css">
         <link rel="stylesheet" href="../../View/css/style.css">
         <link rel="shortcut icon" href="../../View/imagenes/faviconi.png" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
         <style>
             /* Carga correcta de las fuentes Rubik desde /View/fonts/ */
@@ -114,6 +115,7 @@ function ShowJS()
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="../../View/js/off-canvas.js"></script>
     <script src="../../View/js/hoverable-collapse.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="../../View/js/misc.js"></script>
     <script src="../../View/js/settings.js"></script>
     <script src="../../View/js/todolist.js"></script>';

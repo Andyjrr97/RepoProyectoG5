@@ -54,7 +54,7 @@ $producto = ObtenerProductoPorId($id);
                                 <?php endif; ?>
 
                                 <h3 class="mb-3" style="color:#007bff; font-weight:bold;">
-                                    ₡<?php echo number_format($producto['precio'], 2); ?>
+                                    $<?php echo number_format($producto['precio'], 2); ?>
                                 </h3>
 
                                 <p style="color:#333;">

@@ -71,7 +71,7 @@ $productos = ObtenerProductosInicio();
 
                                     <!-- Precio -->
                                     <h5 style="color:#4aa3ff; font-weight:bold;">
-                                        ₡<?php echo number_format($prod['precio'], 2); ?>
+                                        $<?php echo number_format($prod['precio'], 2); ?>
                                     </h5>
 
                                     <!-- Botón Ver más -->
