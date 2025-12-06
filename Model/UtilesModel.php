@@ -8,7 +8,7 @@ function OpenConnection()
     $USUARIO = "root";
     $CONTRASENA = "";
     $BASE_DATOS = "tienda";
-    $PUERTO = 3307; //cambiar el puerto al que usa XAMPP
+    $PUERTO = 3306; //cambiar el puerto al que usa XAMPP
 
     return mysqli_connect($SERVER, $USUARIO, $CONTRASENA, $BASE_DATOS, $PUERTO);
 }

@@ -2,15 +2,12 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
-/* Filtros desde GET */
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
 $marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
 
-/* id_categoria de COMPUTADORAS */
 $categoriaComputadoras = 2;
 
-/* Datos desde el controller */
 $productos         = ObtenerProductosPorCategoria($categoriaComputadoras, $minPrecio, $maxPrecio, $marcasSeleccionadas);
 $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 ?>
@@ -41,18 +38,41 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
                     }
 
                     .producto-card {
-                        background: rgba(0, 0, 0, 0.80);
+                        background: #ffffff;
                         border-radius: 15px;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-                        border: 1px solid rgba(255,255,255,0.05);
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                        border: 1px solid rgba(0,0,0,0.1);
                         text-align: center;
+                        padding: 20px;
+                        color: #0044cc;
+                        transition: transform .2s ease-in-out;
+                    }
+
+                    .producto-card:hover {
+                        transform: scale(1.02);
                     }
 
                     .producto-card img {
-                        width: 140px;
-                        height: 140px;
+                        width: 150px;
+                        height: 150px;
                         object-fit: contain;
                         margin-bottom: 15px;
+                    }
+
+                    .texto-azul-marca {
+                        color: #0066ff;
+                        font-size: 0.9rem;
+                        margin-bottom: 6px;
+                    }
+
+                    .texto-descripcion {
+                        color: #555 !important;
+                        font-size: 0.9rem;
+                    }
+
+                    .producto-card h5.text-primary {
+                        color: #0033cc !important;
+                        font-weight: bold;
                     }
 
                     .filtro-marca-label {
@@ -63,21 +83,21 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
                         margin-bottom: 4px;
                     }
 
-                    .texto-azul-marca {
-                        color: #9fd3ff;
-                        font-size: 0.85rem;
-                        margin-bottom: 4px;
+                    .producto-card .btn-primary {
+                        background-color: #0033cc;
+                        border-color: #0033cc;
                     }
 
-                    .texto-descripcion {
-                        color: #cfcfcf;
-                        font-size: 0.9rem;
+                    .producto-card .btn-primary:hover {
+                        background-color: #002a99;
+                        border-color: #002a99;
                     }
                 </style>
 
                 <h3 class="text-white mb-4">Computadoras</h3>
 
                 <div class="row">
+
                     <!-- FILTROS -->
                     <div class="col-md-3">
                         <div class="filtro-card">
@@ -85,7 +105,6 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 
                             <form method="GET" action="">
 
-                                <!-- Slider de precio -->
                                 <label>Por precio (USD):</label>
                                 <div id="slider-precio" class="mt-2"></div>
 
@@ -96,7 +115,6 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
                                 <input type="hidden" id="min" name="min" value="<?php echo $minPrecio; ?>">
                                 <input type="hidden" id="max" name="max" value="<?php echo $maxPrecio; ?>">
 
-                                <!-- Marcas -->
                                 <?php if (!empty($marcasDisponibles)): ?>
                                     <hr>
                                     <label>Por marca:</label>
@@ -123,6 +141,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
                                 <a href="Computadoras.php" class="btn btn-light btn-block mt-2">
                                     Limpiar filtros
                                 </a>
+
                             </form>
                         </div>
                     </div>
@@ -147,7 +166,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
                                                          alt="<?php echo htmlspecialchars($prod['nombre']); ?>">
                                                 <?php endif; ?>
 
-                                                <h5 class="card-title text-white">
+                                                <h5 class="card-title">
                                                     <?php echo htmlspecialchars($prod['nombre']); ?>
                                                 </h5>
 
@@ -177,6 +196,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
                             <?php endif; ?>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -206,8 +226,8 @@ $(function () {
     });
 
     function actualizarLabels(min, max) {
-        $("#minLabel").text(min.toLocaleString('en-US', { minimumFractionDigits: 0 }));
-        $("#maxLabel").text(max.toLocaleString('en-US', { minimumFractionDigits: 0 }));
+        $("#minLabel").text(min);
+        $("#maxLabel").text(max);
         $("#min").val(min);
         $("#max").val(max);
     }
