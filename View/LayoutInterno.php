@@ -12,7 +12,8 @@ if (!isset($_SESSION["ced_usuario"])) {
 
 function ShowCSS()
 {
-    ?>
+?>
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,12 +25,12 @@ function ShowCSS()
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
         <style>
-            /* Carga correcta de las fuentes Rubik desde /View/fonts/ */
             @font-face {
                 font-family: 'Rubik';
                 src: url('../fonts/Rubik-Light.ttf') format('truetype');
                 font-weight: 300;
             }
+
             @font-face {
                 font-family: 'Rubik';
                 src: url('../fonts/Rubik-Bold.ttf') format('truetype');
@@ -38,7 +39,7 @@ function ShowCSS()
 
             .main-panel .content-wrapper {
                 background: url("../imagenes/tecnologia_gamer.png") center/cover no-repeat;
-                min-height: calc(100vh - 70px); 
+                min-height: calc(100vh - 70px);
             }
 
             .sidebar {
@@ -55,7 +56,8 @@ function ShowCSS()
             }
 
             .footer {
-                background-color: #02003d;   /* mismo azul del layout */
+                background-color: #02003d;
+                /* mismo azul del layout */
                 color: #ffffff;
                 border-top: 1px solid #060a2e;
                 padding: 8px 1.5rem;
@@ -104,7 +106,7 @@ function ShowCSS()
             }
         </style>
     </head>
-    <?php
+<?php
 }
 
 
@@ -156,12 +158,12 @@ function ShowMenu()
                 <div class="profile-desc">
                     <div class="profile-pic">
                         <div>
-                            <img class="img-xs rounded-circle" src="'.$avatar.'" alt="avatar" style="width: 50px; height: 50px; border-radius: 50%;">
+                            <img class="img-xs rounded-circle" src="' . $avatar . '" alt="avatar" style="width: 50px; height: 50px; border-radius: 50%;">
                             <span class="count bg-success"></span>
                         </div>
                         <div class="profile-name">
-                            <h4 class="mb-0 font-weight-normal">'.$nombreCompleto.'</h4>
-                            <span>'.$rol.'</span>
+                            <h4 class="mb-0 font-weight-normal">' . $nombreCompleto . '</h4>
+                            <span>' . $rol . '</span>
                         </div>
                     </div>
                 </div>
@@ -215,6 +217,15 @@ function ShowMenu()
                     <span class="menu-title">Monitores</span>
                 </a>
             </li>            
+            <li class="nav-item menu-items">
+    <a class="nav-link" href="/RepoProyectoG5/View/Carrito/Carrito.php">
+        <span class="menu-icon">
+            <i class="mdi mdi-cart"></i>
+        </span>
+        <span class="menu-title">Carrito</span>
+    </a>
+</li>
+
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Vendidos.php">
@@ -278,8 +289,8 @@ function ShowNav()
                 <li class="nav-item dropdown">
                     <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                         <div class="navbar-profile">
-                            <img class="img-xs rounded-circle" src="'.$avatar.'" alt="avatar" style="width: 50px; height: 50px; border-radius: 50%;">
-                            <p class="mb-0 d-none d-sm-block navbar-profile-name">'.$nombreCompleto.'</p>
+                            <img class="img-xs rounded-circle" src="' . $avatar . '" alt="avatar" style="width: 50px; height: 50px; border-radius: 50%;">
+                            <p class="mb-0 d-none d-sm-block navbar-profile-name">' . $nombreCompleto . '</p>
                             <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                         </div>
                     </a>
@@ -320,10 +331,10 @@ function ShowNav()
 }
 
 function ShowFooter()
-{ 
+{
     echo '
     <footer class="footer text-center">
         <span class="text-muted d-block">© 2025 Élite Electrónica. Todos los derechos reservados.</span>
     </footer>';
-            }
+}
 ?>

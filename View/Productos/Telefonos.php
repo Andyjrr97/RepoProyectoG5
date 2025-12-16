@@ -16,228 +16,198 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaTelefonos);
 <html lang="es">
 <?php ShowCSS(); ?>
 <body>
+
 <div class="container-scroller">
+<?php ShowMenu(); ?>
 
-    <?php ShowMenu(); ?>
+<div class="container-fluid page-body-wrapper">
+<?php ShowNav(); ?>
 
-    <div class="container-fluid page-body-wrapper">
+<div class="main-panel">
+<div class="content-wrapper">
 
-        <?php ShowNav(); ?>
+<style>
+.filtro-card{
+    background: rgba(0,0,0,.75);
+    border-radius: 15px;
+    padding: 20px;
+    color: #fff;
+}
 
-        <div class="main-panel">
-            <div class="content-wrapper">
+.producto-card{
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+    height:100%;
+}
 
-                <style>
-                    .filtro-card {
-                        background: rgba(0, 0, 0, 0.75);
-                        border-radius: 15px;
-                        padding: 20px 25px;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-                        color: #ffffff;
-                        font-size: 0.9rem;
-                    }
+.producto-card img{
+    width:150px;
+    height:150px;
+    object-fit:contain;
+    margin:auto;
+}
 
+.grid-equal{
+    display:flex;
+    flex-wrap:wrap;
+}
 
-                    .producto-card {
-                        background: #f2f2f2; 
-                        border-radius: 15px;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                        border: 1px solid rgba(0,0,0,0.1);
-                        text-align: center;
-                        padding: 20px;
-                        color: #0044cc;
-                        transition: transform .2s ease-in-out;
-                    }
+.grid-equal > div{
+    display:flex;
+}
 
-                    .producto-card:hover {
-                        transform: scale(1.02);
-                    }
+.card-body{
+    display:flex;
+    flex-direction:column;
+}
 
-                    .producto-card img {
-                        width: 150px;
-                        height: 150px;
-                        object-fit: contain;
-                        margin-bottom: 15px;
-                    }
+.card-body .acciones{
+    margin-top:auto;
+}
+</style>
 
-                    .texto-azul-marca {
-                        color: #0066ff;
-                        font-size: 0.9rem;
-                        margin-bottom: 6px;
-                    }
+<h3 class="text-white mb-4">
+    Teléfonos
+    <span class="badge badge-info"><?= count($productos) ?> disponibles</span>
+</h3>
 
+<div class="row">
 
-                    .texto-descripcion {
-                        color: #555 !important;
-                        font-size: 0.9rem;
-                    }
+<!-- FILTROS -->
+<div class="col-md-3">
+<div class="filtro-card">
+<form method="GET">
 
+<label>Precio:</label>
+<div id="slider-precio" class="mt-2"></div>
+<p class="mt-2">$<span id="minLabel"></span> - $<span id="maxLabel"></span></p>
 
-                    .producto-card h5.text-primary {
-                        color: #0033cc !important;
-                        font-weight: bold;
-                    }
+<input type="hidden" name="min" id="min" value="<?= $minPrecio ?>">
+<input type="hidden" name="max" id="max" value="<?= $maxPrecio ?>">
 
+<?php if($marcasDisponibles): ?>
+<hr>
+<label>Marca:</label>
+<?php foreach($marcasDisponibles as $m): ?>
+<label class="d-block">
+<input type="checkbox" name="marca[]"
+       value="<?= $m['marca'] ?>"
+       <?= in_array($m['marca'],$marcasSeleccionadas)?'checked':'' ?>>
+<?= $m['marca'] ?>
+</label>
+<?php endforeach; ?>
+<?php endif; ?>
 
-                    .filtro-marca-label {
-                        display: flex;
-                        align-items: center;
-                        gap: 6px;
-                        font-size: 0.9rem;
-                        margin-bottom: 4px;
-                    }
+<button class="btn btn-primary btn-block mt-3">Aplicar</button>
+<a href="telefonos.php" class="btn btn-light btn-block mt-2">Limpiar</a>
 
+</form>
+</div>
+</div>
 
-                    .producto-card .btn-primary {
-                        background-color: #0033cc;
-                        border-color: #0033cc;
-                    }
+<!-- PRODUCTOS -->
+<div class="col-md-9">
+<div class="row grid-equal">
 
-                    .producto-card .btn-primary:hover {
-                        background-color: #002a99;
-                        border-color: #002a99;
-                    }
-                </style>
+<?php if(empty($productos)): ?>
+<div class="col-12">
+<div class="alert alert-info">No hay productos</div>
+</div>
+<?php endif; ?>
 
-                <h3 class="text-white mb-4">Teléfonos</h3>
+<?php foreach($productos as $p): ?>
+<div class="col-md-6 col-lg-4 mb-4">
+<div class="card producto-card">
+<div class="card-body text-center">
 
-                <div class="row">
+<img src="../imagenes/<?= htmlspecialchars($p['imagen']) ?>">
 
-                    <!-- FILTROS -->
-                    <div class="col-md-3">
-                        <div class="filtro-card">
-                            <h4 class="mb-3">Filtrar</h4>
+<h5 class="mt-2"><?= htmlspecialchars($p['nombre']) ?></h5>
+<p class="text-muted"><?= htmlspecialchars($p['descripcion']) ?></p>
 
-                            <form method="GET" action="">
+<p><b>Stock:</b> <?= $p['stock'] ?></p>
 
-                                <label>Por precio (USD):</label>
-                                <div id="slider-precio" class="mt-2"></div>
+<h5 class="text-primary">$<?= number_format($p['precio'],2) ?></h5>
 
-                                <p class="mt-2 mb-3">
-                                    $<span id="minLabel"></span> — $<span id="maxLabel"></span>
-                                </p>
+<div class="acciones">
 
-                                <input type="hidden" id="min" name="min" value="<?php echo $minPrecio; ?>">
-                                <input type="hidden" id="max" name="max" value="<?php echo $maxPrecio; ?>">
+<form class="form-agregar-carrito">
+<input type="hidden" name="id_producto" value="<?= $p['id_producto'] ?>">
+<input type="hidden" name="nombre" value="<?= htmlspecialchars($p['nombre']) ?>">
+<input type="hidden" name="precio" value="<?= $p['precio'] ?>">
+<input type="hidden" name="stock" value="<?= $p['stock'] ?>">
 
-                                <?php if (!empty($marcasDisponibles)): ?>
-                                    <hr>
-                                    <label>Por marca:</label>
-                                    <div style="max-height: 160px; overflow-y:auto; margin-top:5px;">
-                                        <?php foreach ($marcasDisponibles as $m): 
-                                            $marca   = $m['marca'];
-                                            $checked = in_array($marca, $marcasSeleccionadas) ? 'checked' : '';
-                                        ?>
-                                            <label class="filtro-marca-label">
-                                                <input type="checkbox" 
-                                                       name="marca[]" 
-                                                       value="<?php echo htmlspecialchars($marca); ?>" 
-                                                       <?php echo $checked; ?>>
-                                                <span><?php echo htmlspecialchars($marca); ?></span>
-                                            </label>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
+<input type="number"
+       name="cantidad"
+       min="1"
+       max="<?= $p['stock'] ?>"
+       value="1"
+       class="form-control mb-2">
 
-                                <button type="submit" class="btn btn-primary btn-block mt-3">
-                                    Aplicar filtros
-                                </button>
+<button class="btn btn-success btn-sm btn-block">
+Agregar al carrito
+</button>
+</form>
 
-                                <a href="Telefonos.php" class="btn btn-light btn-block mt-2">
-                                    Limpiar filtros
-                                </a>
+<a href="../Productos/DetalleProducto.php?id=<?= $p['id_producto'] ?>"
+   class="btn btn-primary btn-sm btn-block mt-2">
+Ver más
+</a>
 
-                            </form>
-                        </div>
-                    </div>
+</div>
+</div>
+</div>
+</div>
+<?php endforeach; ?>
 
+</div>
+</div>
 
-                    <div class="col-md-9">
-                        <div class="row">
-                            <?php if (empty($productos)): ?>
-                                <div class="col-12">
-                                    <div class="alert alert-info">
-                                        No se encontraron teléfonos con los filtros seleccionados.
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <?php foreach ($productos as $prod): ?>
-                                    <div class="col-md-6 col-lg-4 grid-margin stretch-card">
-                                        <div class="card producto-card">
-                                            <div class="card-body">
+</div>
+</div>
 
-                                                <?php if (!empty($prod['imagen'])): ?>
-                                                    <img src="../imagenes/<?php echo htmlspecialchars($prod['imagen']); ?>"
-                                                         alt="<?php echo htmlspecialchars($prod['nombre']); ?>">
-                                                <?php endif; ?>
-
-                                                <h5 class="card-title">
-                                                    <?php echo htmlspecialchars($prod['nombre']); ?>
-                                                </h5>
-
-                                                <?php if (!empty($prod['marca'])): ?>
-                                                    <p class="texto-azul-marca">
-                                                        Marca: <b><?php echo htmlspecialchars($prod['marca']); ?></b>
-                                                    </p>
-                                                <?php endif; ?>
-
-                                                <p class="card-description texto-descripcion">
-                                                    <?php echo htmlspecialchars($prod['descripcion']); ?>
-                                                </p>
-
-                                                <h5 class="text-primary font-weight-bold mb-3">
-                                                    $<?php echo number_format($prod['precio'], 2); ?>
-                                                </h5>
-
-                                                <a href="../Productos/DetalleProducto.php?id=<?php echo $prod['id_producto']; ?>"
-                                                   class="btn btn-primary btn-sm">
-                                                    Ver más
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <?php ShowFooter(); ?>
-
-        </div>
-    </div>
+<?php ShowFooter(); ?>
+</div>
+</div>
 </div>
 
 <?php ShowJS(); ?>
 
 <script>
-$(function () {
-    const minInicial = <?php echo $minPrecio; ?>;
-    const maxInicial = <?php echo $maxPrecio; ?>;
+$(function(){
 
-    $("#slider-precio").slider({
-        range: true,
-        min: 0,
-        max: 1500,
-        step: 10,
-        values: [minInicial, maxInicial],
-        slide: function (event, ui) {
-            actualizarLabels(ui.values[0], ui.values[1]);
-        }
-    });
-
-    function actualizarLabels(min, max) {
-        $("#minLabel").text(min);
-        $("#maxLabel").text(max);
-        $("#min").val(min);
-        $("#max").val(max);
+$("#slider-precio").slider({
+    range:true,
+    min:0,
+    max:1500,
+    values:[<?= $minPrecio ?>,<?= $maxPrecio ?>],
+    slide:function(e,ui){
+        $("#minLabel").text(ui.values[0]);
+        $("#maxLabel").text(ui.values[1]);
+        $("#min").val(ui.values[0]);
+        $("#max").val(ui.values[1]);
     }
+});
 
-    actualizarLabels(minInicial, maxInicial);
+$("#minLabel").text(<?= $minPrecio ?>);
+$("#maxLabel").text(<?= $maxPrecio ?>);
+
+// AJAX carrito
+$('.form-agregar-carrito').submit(function(e){
+    e.preventDefault();
+
+    $.post(
+        '../Controller/agregar_carrito.php',
+        $(this).serialize(),
+        function(resp){
+            if(resp.ok){
+                $('#contador-carrito').text(resp.total_items);
+            }
+        },
+        'json'
+    );
+});
 });
 </script>
 
