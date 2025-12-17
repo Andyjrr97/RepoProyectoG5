@@ -11,11 +11,15 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
     exit;
 }
 
+// Configuración de la categoría
 $categoriaId = 4;
+
+// Captura de filtros
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
-$maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 2000;
+$maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
 $marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
 
+// Obtención de datos desde el controlador
 $productos = ObtenerProductosPorCategoria($categoriaId, $minPrecio, $maxPrecio, $marcasSeleccionadas);
 $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
 ?>
@@ -56,6 +60,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                         height: 150px;
                         object-fit: contain;
                         margin: 20px auto;
+                        display: block;
                     }
                     .card-body {
                         display: flex;
@@ -74,8 +79,8 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                     <div class="col-md-3">
                         <div class="filtro-card">
                             <form method="GET" action="Monitores.php">
-                                <h4 class="text-white">Filtrar</h4>
-                                <hr style="border-color: rgba(255,255,255,0.2);">
+                                <h4>Filtros</h4>
+                                <hr style="border-top: 1px solid rgba(255,255,255,0.2);">
                                 
                                 <label>Precio (USD):</label>
                                 <div id="slider-precio" class="mt-2 mb-2"></div>
@@ -99,7 +104,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                                     </div>
                                 <?php endif; ?>
 
-                                <button type="submit" class="btn btn-primary btn-block mt-3">Aplicar Filtros</button>
+                                <button type="submit" class="btn btn-primary btn-block mt-3">Aplicar</button>
                                 <a href="Monitores.php" class="btn btn-light btn-block mt-2">Limpiar</a>
                             </form>
                         </div>
@@ -108,21 +113,21 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                     <div class="col-md-9">
                         <div class="row">
                             <?php if (empty($productos)): ?>
-                                <div class="col-12">
-                                    <div class="alert alert-warning text-center">
-                                        No se encontraron monitores disponibles con los criterios seleccionados.
+                                <div class="col-12 text-center">
+                                    <div class="alert alert-info">
+                                        No se encontraron monitores. Verifique que el estado sea 'Activo' en la base de datos.
                                     </div>
                                 </div>
                             <?php else: ?>
                                 <?php foreach ($productos as $p): ?>
                                     <div class="col-md-6 col-lg-4 mb-4">
                                         <div class="card producto-card">
-                                            <img src="../imagenes/<?php echo htmlspecialchars($p['imagen']); ?>" alt="Monitor">
+                                            <img src="../imagenes/<?php echo htmlspecialchars($p['imagen']); ?>" alt="Imagen del Producto">
                                             <div class="card-body">
                                                 <h5 class="card-title"><?php echo htmlspecialchars($p['nombre']); ?></h5>
                                                 <p class="text-muted small"><?php echo htmlspecialchars($p['descripcion']); ?></p>
                                                 <p class="mb-1"><b>Marca:</b> <?php echo htmlspecialchars($p['marca']); ?></p>
-                                                <p class="mb-2 text-primary font-weight-bold">$<?php echo number_format($p['precio'], 2); ?></p>
+                                                <h4 class="text-primary font-weight-bold">$<?php echo number_format($p['precio'], 2); ?></h4>
                                                 
                                                 <div class="acciones">
                                                     <form method="POST" action="/RepoProyectoG5/Controller/agregar_carrito.php" target="iframe_carrito">
@@ -133,7 +138,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                                                         <input type="number" name="cantidad" min="1" max="<?php echo $p['stock']; ?>" value="1" class="form-control mb-2">
                                                         <button class="btn btn-success btn-sm btn-block">Agregar al carrito</button>
                                                     </form>
-                                                    <a href="../Productos/DetalleProducto.php?id=<?php echo $p['id_producto']; ?>" class="btn btn-primary btn-sm btn-block mt-2">Detalles</a>
+                                                    <a href="../Productos/DetalleProducto.php?id=<?php echo $p['id_producto']; ?>" class="btn btn-primary btn-sm btn-block mt-2">Ver Detalles</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +161,7 @@ $(function() {
     $("#slider-precio").slider({
         range: true,
         min: 0,
-        max: 2000,
+        max: 1500,
         values: [<?php echo $minPrecio; ?>, <?php echo $maxPrecio; ?>],
         slide: function(event, ui) {
             $("#minLabel").text(ui.values[0]);
