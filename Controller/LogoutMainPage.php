@@ -19,3 +19,4 @@ session_destroy();
 // Redirigir al login
 header("Location: ../View/Inicio/IniciarSesion.php");
 exit;
+
