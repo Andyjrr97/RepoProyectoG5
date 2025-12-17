@@ -114,3 +114,35 @@ function ListarMarcasPorCategoriaModel($categoriaId)
         return [];
     }
 }
+
+function AgregarProductoModel($nombre, $descripcion, $marca, $precio, $stock, $estado, $categoria, $descripcion_detallada, $imagen)
+{
+    try {
+        $db = OpenConnection();
+
+        $nombre  = $db->real_escape_string($nombre);
+        $descripcion = $db->real_escape_string($descripcion);
+        $marca   = $db->real_escape_string($marca);
+        $estado  = $db->real_escape_string($estado);
+        $descripcion_detallada = $db->real_escape_string($descripcion_detallada);
+        $imagen  = $db->real_escape_string($imagen);
+
+        $precio  = (float)$precio;
+        $stock   = (int)$stock;
+        $categoria = (int)$categoria;
+
+        $sql = "INSERT INTO productos
+                (nombre, descripcion, marca, precio, stock, estado, id_categoria, descripcion_detallada, imagen)
+                VALUES
+                ('$nombre', '$descripcion', '$marca', $precio, $stock, '$estado', $categoria, '$descripcion_detallada', '$imagen')";
+
+        $ok = $db->query($sql);
+
+        CloseConnection($db);
+        return $ok ? true : false;
+
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
