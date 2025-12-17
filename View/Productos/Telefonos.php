@@ -2,6 +2,17 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
+    header("Location: /RepoProyectoG5/View/Inicio/Principal.php");
+    exit;
+}
+
+
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
 $marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
@@ -16,6 +27,9 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaTelefonos);
 <html lang="es">
 <?php ShowCSS(); ?>
 <body>
+
+
+<iframe name="iframe_carrito" style="display:none;"></iframe>
 
 <div class="container-scroller">
 <?php ShowMenu(); ?>
@@ -132,7 +146,10 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaTelefonos);
 
 <div class="acciones">
 
-<form class="form-agregar-carrito">
+<form method="POST"
+      action="/RepoProyectoG5/Controller/agregar_carrito.php"
+      target="iframe_carrito">
+
 <input type="hidden" name="id_producto" value="<?= $p['id_producto'] ?>">
 <input type="hidden" name="nombre" value="<?= htmlspecialchars($p['nombre']) ?>">
 <input type="hidden" name="precio" value="<?= $p['precio'] ?>">
@@ -193,21 +210,6 @@ $("#slider-precio").slider({
 $("#minLabel").text(<?= $minPrecio ?>);
 $("#maxLabel").text(<?= $maxPrecio ?>);
 
-// AJAX carrito
-$('.form-agregar-carrito').submit(function(e){
-    e.preventDefault();
-
-    $.post(
-        '../Controller/agregar_carrito.php',
-        $(this).serialize(),
-        function(resp){
-            if(resp.ok){
-                $('#contador-carrito').text(resp.total_items);
-            }
-        },
-        'json'
-    );
-});
 });
 </script>
 
