@@ -2,7 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
-/* ================== RESTRICCIÓN (SOLO CLIENTE) ================== */
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,7 +11,7 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
     header("Location: /RepoProyectoG5/View/Inicio/Principal.php");
     exit;
 }
-/* ================================================================ */
+
 
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
@@ -28,7 +28,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 <?php ShowCSS(); ?>
 <body>
 
-<!-- IMPORTANTE: iframe oculto para que el POST NO cambie de página -->
+
 <iframe name="iframe_carrito" style="display:none;"></iframe>
 
 <div class="container-scroller">
@@ -41,7 +41,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 <div class="content-wrapper">
 
 <style>
-/* ================= FILTROS ================= */
+
 .filtro-card{
     background: rgba(0,0,0,.75);
     border-radius:15px;
@@ -50,7 +50,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
     box-shadow:0 4px 12px rgba(0,0,0,.4);
 }
 
-/* ================= PRODUCTOS ================= */
+
 .producto-card{
     background:#fff;
     border-radius:15px;
@@ -99,7 +99,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 
 <div class="row">
 
-<!-- ================= FILTROS ================= -->
+
 <div class="col-md-3">
 <div class="filtro-card">
 
@@ -132,7 +132,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 </div>
 </div>
 
-<!-- ================= PRODUCTOS ================= -->
+
 <div class="col-md-9">
 <div class="row">
 
