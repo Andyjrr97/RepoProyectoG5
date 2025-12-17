@@ -2,6 +2,9 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
+$minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
+$maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
+$marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -12,15 +15,10 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
     exit;
 }
 
+$categoriaMonitores = 4;
 
-$minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
-$maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
-$marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
-
-$categoriaTelefonos = 1;
-
-$productos         = ObtenerProductosPorCategoria($categoriaTelefonos, $minPrecio, $maxPrecio, $marcasSeleccionadas);
-$marcasDisponibles = ObtenerMarcasPorCategoria($categoriaTelefonos);
+$productos         = ObtenerProductosPorCategoria($categoriaMonitores, $minPrecio, $maxPrecio, $marcasSeleccionadas);
+$marcasDisponibles = ObtenerMarcasPorCategoria($categoriaMonitores);
 ?>
 
 <!DOCTYPE html>
@@ -28,188 +26,250 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaTelefonos);
 <?php ShowCSS(); ?>
 <body>
 
-
 <iframe name="iframe_carrito" style="display:none;"></iframe>
 
 <div class="container-scroller">
-<?php ShowMenu(); ?>
 
-<div class="container-fluid page-body-wrapper">
-<?php ShowNav(); ?>
+    <?php ShowMenu(); ?>
 
-<div class="main-panel">
-<div class="content-wrapper">
+    <div class="container-fluid page-body-wrapper">
 
-<style>
-.filtro-card{
-    background: rgba(0,0,0,.75);
-    border-radius: 15px;
-    padding: 20px;
-    color: #fff;
-}
+        <?php ShowNav(); ?>
 
-.producto-card{
-    background:#fff;
-    border-radius:15px;
-    box-shadow:0 4px 12px rgba(0,0,0,.15);
-    height:100%;
-}
+        <div class="main-panel">
+            <div class="content-wrapper">
 
-.producto-card img{
-    width:150px;
-    height:150px;
-    object-fit:contain;
-    margin:auto;
-}
+                <style>
+                    .filtro-card {
+                        background: rgba(0, 0, 0, 0.75);
+                        border-radius: 15px;
+                        padding: 20px 25px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+                        color: #ffffff;
+                        font-size: 0.9rem;
+                    }
 
-.grid-equal{
-    display:flex;
-    flex-wrap:wrap;
-}
+                    .producto-card {
+                        background: #f2f2f2; 
+                        border-radius: 15px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                        border: 1px solid rgba(0,0,0,0.1);
+                        text-align: center;
+                        padding: 20px;
+                        color: #0044cc;
+                        transition: transform .2s ease-in-out;
+                    }
 
-.grid-equal > div{
-    display:flex;
-}
+                    .producto-card:hover {
+                        transform: scale(1.02);
+                    }
 
-.card-body{
-    display:flex;
-    flex-direction:column;
-}
+                    .producto-card img {
+                        width: 150px;
+                        height: 150px;
+                        object-fit: contain;
+                        margin-bottom: 15px;
+                    }
 
-.card-body .acciones{
-    margin-top:auto;
-}
-</style>
+                    .texto-azul-marca {
+                        color: #0066ff;
+                        font-size: 0.9rem;
+                        margin-bottom: 6px;
+                    }
 
-<h3 class="text-white mb-4">
-    Teléfonos
-    <span class="badge badge-info"><?= count($productos) ?> disponibles</span>
-</h3>
+                    .texto-descripcion {
+                        color: #555 !important;
+                        font-size: 0.9rem;
+                    }
 
-<div class="row">
+                    .producto-card h5.text-primary {
+                        color: #0033cc !important;
+                        font-weight: bold;
+                    }
 
-<!-- FILTROS -->
-<div class="col-md-3">
-<div class="filtro-card">
-<form method="GET">
+                    .filtro-marca-label {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-size: 0.9rem;
+                        margin-bottom: 4px;
+                    }
 
-<label>Precio:</label>
-<div id="slider-precio" class="mt-2"></div>
-<p class="mt-2">$<span id="minLabel"></span> - $<span id="maxLabel"></span></p>
+                    .producto-card .btn-primary {
+                        background-color: #0033cc;
+                        border-color: #0033cc;
+                    }
 
-<input type="hidden" name="min" id="min" value="<?= $minPrecio ?>">
-<input type="hidden" name="max" id="max" value="<?= $maxPrecio ?>">
+                    .producto-card .btn-primary:hover {
+                        background-color: #002a99;
+                        border-color: #002a99;
+                    }
+                </style>
 
-<?php if($marcasDisponibles): ?>
-<hr>
-<label>Marca:</label>
-<?php foreach($marcasDisponibles as $m): ?>
-<label class="d-block">
-<input type="checkbox" name="marca[]"
-       value="<?= $m['marca'] ?>"
-       <?= in_array($m['marca'],$marcasSeleccionadas)?'checked':'' ?>>
-<?= $m['marca'] ?>
-</label>
-<?php endforeach; ?>
-<?php endif; ?>
+                <h3 class="text-white mb-4">Monitores</h3>
 
-<button class="btn btn-primary btn-block mt-3">Aplicar</button>
-<a href="telefonos.php" class="btn btn-light btn-block mt-2">Limpiar</a>
+                <div class="row">
 
-</form>
-</div>
-</div>
+                    <div class="col-md-3">
+                        <div class="filtro-card">
+                            <h4 class="mb-3">Filtrar</h4>
 
-<!-- PRODUCTOS -->
-<div class="col-md-9">
-<div class="row grid-equal">
+                            <form method="GET" action="">
 
-<?php if(empty($productos)): ?>
-<div class="col-12">
-<div class="alert alert-info">No hay productos</div>
-</div>
-<?php endif; ?>
+                                <label>Por precio (USD):</label>
+                                <div id="slider-precio" class="mt-2"></div>
 
-<?php foreach($productos as $p): ?>
-<div class="col-md-6 col-lg-4 mb-4">
-<div class="card producto-card">
-<div class="card-body text-center">
+                                <p class="mt-2 mb-3">
+                                    $<span id="minLabel"></span> — $<span id="maxLabel"></span>
+                                </p>
 
-<img src="../imagenes/<?= htmlspecialchars($p['imagen']) ?>">
+                                <input type="hidden" id="min" name="min" value="<?php echo $minPrecio; ?>">
+                                <input type="hidden" id="max" name="max" value="<?php echo $maxPrecio; ?>">
 
-<h5 class="mt-2"><?= htmlspecialchars($p['nombre']) ?></h5>
-<p class="text-muted"><?= htmlspecialchars($p['descripcion']) ?></p>
+                                <?php if (!empty($marcasDisponibles)): ?>
+                                    <hr>
+                                    <label>Por marca:</label>
+                                    <div style="max-height: 160px; overflow-y:auto; margin-top:5px;">
+                                        <?php foreach ($marcasDisponibles as $m): 
+                                            $marca   = $m['marca'];
+                                            $checked = in_array($marca, $marcasSeleccionadas) ? 'checked' : '';
+                                            ?>
+                                            <label class="filtro-marca-label">
+                                                <input type="checkbox"
+                                                       name="marca[]"
+                                                       value="<?php echo htmlspecialchars($marca); ?>"
+                                                       <?php echo $checked; ?>>
+                                                <span><?php echo htmlspecialchars($marca); ?></span>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
 
-<p><b>Stock:</b> <?= $p['stock'] ?></p>
+                                <button type="submit" class="btn btn-primary btn-block mt-3">
+                                    Aplicar filtros
+                                </button>
 
-<h5 class="text-primary">$<?= number_format($p['precio'],2) ?></h5>
+                                <a href="Monitores.php" class="btn btn-light btn-block mt-2">
+                                    Limpiar filtros
+                                </a>
 
-<div class="acciones">
+                            </form>
+                        </div>
+                    </div>
 
-<form method="POST"
-      action="/RepoProyectoG5/Controller/agregar_carrito.php"
-      target="iframe_carrito">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <?php if (empty($productos)): ?>
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        No se encontraron monitores con los filtros seleccionados.
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <?php foreach ($productos as $prod): ?>
+                                    <div class="col-md-6 col-lg-4 grid-margin stretch-card">
+                                        <div class="card producto-card">
+                                            <div class="card-body">
 
-<input type="hidden" name="id_producto" value="<?= $p['id_producto'] ?>">
-<input type="hidden" name="nombre" value="<?= htmlspecialchars($p['nombre']) ?>">
-<input type="hidden" name="precio" value="<?= $p['precio'] ?>">
-<input type="hidden" name="stock" value="<?= $p['stock'] ?>">
+                                                <?php if (!empty($prod['imagen'])): ?>
+                                                    <img src="../imagenes/<?php echo htmlspecialchars($prod['imagen']); ?>"
+                                                         alt="<?php echo htmlspecialchars($prod['nombre']); ?>">
+                                                <?php endif; ?>
 
-<input type="number"
-       name="cantidad"
-       min="1"
-       max="<?= $p['stock'] ?>"
-       value="1"
-       class="form-control mb-2">
+                                                <h5 class="card-title">
+                                                    <?php echo htmlspecialchars($prod['nombre']); ?>
+                                                </h5>
 
-<button class="btn btn-success btn-sm btn-block">
-Agregar al carrito
-</button>
-</form>
+                                                <?php if (!empty($prod['marca'])): ?>
+                                                    <p class="texto-azul-marca">
+                                                        Marca: <b><?php echo htmlspecialchars($prod['marca']); ?></b>
+                                                    </p>
+                                                <?php endif; ?>
 
-<a href="../Productos/DetalleProducto.php?id=<?= $p['id_producto'] ?>"
-   class="btn btn-primary btn-sm btn-block mt-2">
-Ver más
-</a>
+                                                <p class="card-description texto-descripcion">
+                                                    <?php echo htmlspecialchars($prod['descripcion']); ?>
+                                                </p>
 
-</div>
-</div>
-</div>
-</div>
-<?php endforeach; ?>
+                                                <p style="color:#555; font-size:0.85rem; margin-bottom:8px;">
+                                                    Disponibles: <?php echo $prod['stock']; ?>
+                                                </p>
 
-</div>
-</div>
+                                                <h5 class="text-primary font-weight-bold mb-3">
+                                                    $<?php echo number_format($prod['precio'], 2); ?>
+                                                </h5>
 
-</div>
-</div>
+                                                <form method="POST"
+                                                      action="/RepoProyectoG5/Controller/agregar_carrito.php"
+                                                      target="iframe_carrito"
+                                                      style="margin-bottom:10px;">
 
-<?php ShowFooter(); ?>
-</div>
-</div>
+                                                    <input type="hidden" name="id_producto" value="<?php echo $prod['id_producto']; ?>">
+                                                    <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($prod['nombre']); ?>">
+                                                    <input type="hidden" name="precio" value="<?php echo $prod['precio']; ?>">
+                                                    <input type="hidden" name="stock" value="<?php echo $prod['stock']; ?>">
+
+                                                    <input type="number"
+                                                           name="cantidad"
+                                                           min="1"
+                                                           max="<?php echo $prod['stock']; ?>"
+                                                           value="1"
+                                                           class="form-control mb-2"
+                                                           style="max-width:120px; margin:0 auto;">
+
+                                                    <button class="btn btn-success btn-sm btn-block">
+                                                        Agregar al carrito
+                                                    </button>
+                                                </form>
+
+                                                <a href="../Productos/DetalleProducto.php?id=<?php echo $prod['id_producto']; ?>"
+                                                   class="btn btn-primary btn-sm">
+                                                    Ver más
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <?php ShowFooter(); ?>
+
+        </div>
+    </div>
 </div>
 
 <?php ShowJS(); ?>
 
 <script>
-$(function(){
+$(function () {
+    const minInicial = <?php echo $minPrecio; ?>;
+    const maxInicial = <?php echo $maxPrecio; ?>;
 
-$("#slider-precio").slider({
-    range:true,
-    min:0,
-    max:1500,
-    values:[<?= $minPrecio ?>,<?= $maxPrecio ?>],
-    slide:function(e,ui){
-        $("#minLabel").text(ui.values[0]);
-        $("#maxLabel").text(ui.values[1]);
-        $("#min").val(ui.values[0]);
-        $("#max").val(ui.values[1]);
+    $("#slider-precio").slider({
+        range: true,
+        min: 0,
+        max: 1500,
+        step: 10,
+        values: [minInicial, maxInicial],
+        slide: function (event, ui) {
+            actualizarLabels(ui.values[0], ui.values[1]);
+        }
+    });
+
+    function actualizarLabels(min, max) {
+        $("#minLabel").text(min);
+        $("#maxLabel").text(max);
+        $("#min").val(min);
+        $("#max").val(max);
     }
-});
 
-$("#minLabel").text(<?= $minPrecio ?>);
-$("#maxLabel").text(<?= $maxPrecio ?>);
-
+    actualizarLabels(minInicial, maxInicial);
 });
 </script>
 
