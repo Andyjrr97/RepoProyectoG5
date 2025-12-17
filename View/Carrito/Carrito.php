@@ -44,6 +44,7 @@ $carrito = CarritoController::obtener();
     <th class="text-center">Cantidad</th>
     <th class="text-end">Precio</th>
     <th class="text-end">Subtotal</th>
+    <th class="text-center">Acciones</th>
 </tr>
 </thead>
 
@@ -58,7 +59,7 @@ $carrito = CarritoController::obtener();
 
     <td class="text-center">
         <span class="badge badge-info px-3 py-2">
-            <?php echo $p['cantidad']; ?>
+            <?php echo (int)$p['cantidad']; ?>
         </span>
     </td>
 
@@ -68,6 +69,25 @@ $carrito = CarritoController::obtener();
 
     <td class="text-end text-success fw-bold">
         $<?php echo number_format($p['precio'] * $p['cantidad'],2); ?>
+    </td>
+
+    <td class="text-center">
+
+        <form method="POST" action="/RepoProyectoG5/Controller/CarritoController.php" style="display:inline;">
+            <input type="hidden" name="id_producto" value="<?php echo (int)$p['id_producto']; ?>">
+            <button type="submit" name="btnRestarCarrito" class="btn btn-sm btn-light">-</button>
+        </form>
+
+        <form method="POST" action="/RepoProyectoG5/Controller/CarritoController.php" style="display:inline;">
+            <input type="hidden" name="id_producto" value="<?php echo (int)$p['id_producto']; ?>">
+            <button type="submit" name="btnSumarCarrito" class="btn btn-sm btn-light">+</button>
+        </form>
+
+        <form method="POST" action="/RepoProyectoG5/Controller/CarritoController.php" style="display:inline;">
+            <input type="hidden" name="id_producto" value="<?php echo (int)$p['id_producto']; ?>">
+            <button type="submit" name="btnEliminarCarrito" class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+
     </td>
 </tr>
 <?php endforeach; ?>
@@ -79,9 +99,11 @@ $carrito = CarritoController::obtener();
 
 <div class="row align-items-center">
     <div class="col-md-6">
-        <p class="text-muted mb-0">
-            Revisa tus productos antes de finalizar la compra
-        </p>
+        <form method="POST" action="/RepoProyectoG5/Controller/CarritoController.php">
+            <button type="submit" name="btnVaciarCarrito" class="btn btn-outline-danger">
+                Vaciar carrito
+            </button>
+        </form>
     </div>
 
     <div class="col-md-6 text-end">
@@ -91,6 +113,10 @@ $carrito = CarritoController::obtener();
                 $<?php echo number_format(CarritoController::total(),2); ?>
             </span>
         </h4>
+
+        <a href="/RepoProyectoG5/View/Pago/Pagar.php" class="btn btn-success mt-2">
+            Pagar
+        </a>
     </div>
 </div>
 
@@ -108,3 +134,4 @@ $carrito = CarritoController::obtener();
 <?php ShowJS(); ?>
 </body>
 </html>
+
