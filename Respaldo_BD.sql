@@ -548,3 +548,85 @@ DELIMITER ;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2025-12-01 12:57:09
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_historial_producto(
+    IN pIdProducto INT
+)
+BEGIN
+    SELECT 
+        pe.fecha,
+        dp.cantidad,
+        dp.precio_unitario,
+        dp.total_linea
+    FROM detalle_pedidos dp
+    INNER JOIN pedidos pe ON pe.id_pedido = dp.id_pedido
+    WHERE pe.estado = 'Confirmado'
+      AND dp.id_producto = pIdProducto
+    ORDER BY pe.fecha ASC;
+END $$
+
+DELIMITER ;
+
+CREATE PROCEDURE sp_top_vendidos_rango(
+    IN pInicio DATETIME,
+    IN pFin DATETIME
+)
+BEGIN
+    SELECT 
+        p.id_producto,
+        p.nombre,
+        SUM(dp.cantidad) AS total_vendido,
+        SUM(dp.total_linea) AS total_ingresos
+    FROM detalle_pedidos dp
+    INNER JOIN pedidos pe ON pe.id_pedido = dp.id_pedido
+    INNER JOIN productos p ON p.id_producto = dp.id_producto
+    WHERE pe.estado = 'Confirmado'
+      AND pe.fecha BETWEEN pInicio AND pFin
+    GROUP BY p.id_producto, p.nombre
+    ORDER BY total_vendido DESC;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_historial_producto(
+    IN pIdProducto INT
+)
+BEGIN
+    SELECT 
+        pe.fecha,
+        dp.cantidad,
+        dp.precio_unitario,
+        dp.total_linea
+    FROM detalle_pedidos dp
+    INNER JOIN pedidos pe ON pe.id_pedido = dp.id_pedido
+    WHERE pe.estado = 'Confirmado'
+      AND dp.id_producto = pIdProducto
+    ORDER BY pe.fecha ASC;
+END $$
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

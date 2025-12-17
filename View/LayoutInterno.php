@@ -12,7 +12,7 @@ if (!isset($_SESSION["ced_usuario"])) {
 
 function ShowCSS()
 {
-?>
+    ?>
 
     <head>
         <meta charset="utf-8">
@@ -106,7 +106,7 @@ function ShowCSS()
             }
         </style>
     </head>
-<?php
+    <?php
 }
 
 
@@ -128,26 +128,21 @@ function ShowMenu()
     $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
 
     $avatar = "../imagenes/Cliente.png";
-
     if ($rol === "Administrador") {
         $avatar = "../imagenes/admin.png";
     }
 
-    $nombre     = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
-    $apellido1  = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
+    $nombre = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
+    $apellido1 = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
     $nombreCompleto = trim($nombre . " " . $apellido1);
-
-    $rol = isset($_SESSION["rol"]) ? $_SESSION["rol"] : "Invitado";
 
     echo '
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-            <!-- Logo normal (sidebar completo) -->
             <a class="sidebar-brand brand-logo" href="/RepoProyectoG5/View/Inicio/Principal.php">
                 <img src="../imagenes/logo_elite.png" alt="logo" />
             </a>
 
-            <!-- Logo mini (cuando el sidebar está colapsado) -->
             <a class="sidebar-brand brand-logo-mini" href="/RepoProyectoG5/View/Inicio/Principal.php">
                 <img src="../imagenes/logo_mini_elite.png" alt="logo mini" />
             </a>
@@ -176,55 +171,59 @@ function ShowMenu()
             ' . ($rol === "Cliente" ? '
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Computadoras.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-laptop"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-laptop"></i></span>
                     <span class="menu-title">Computadoras</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Telefonos.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-cellphone"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-cellphone"></i></span>
                     <span class="menu-title">Telefonos</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Componentes.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-memory"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-memory"></i></span>
                     <span class="menu-title">Componentes</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Accesorios.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-headphones"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-headphones"></i></span>
                     <span class="menu-title">Accesorios</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Monitores.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-monitor"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-monitor"></i></span>
                     <span class="menu-title">Monitores</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Carrito/Carrito.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-cart"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-cart"></i></span>
                     <span class="menu-title">Carrito</span>
+                </a>
+            </li>
+
+            <!-- ✅ SOLO CLIENTE -->
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/RepoProyectoG5/View/info/Contactenos.php">
+                    <span class="menu-icon"><i class="mdi mdi-phone"></i></span>
+                    <span class="menu-title">Contactenos</span>
+                </a>
+            </li>
+
+            <!-- ✅ SOLO CLIENTE -->
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/RepoProyectoG5/View/info/SobreNosotros.php">
+                    <span class="menu-icon"><i class="mdi mdi-information"></i></span>
+                    <span class="menu-title">Sobre Nosotros</span>
                 </a>
             </li>
             ' : '') . '
@@ -232,44 +231,23 @@ function ShowMenu()
             ' . ($rol === "Administrador" ? '
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/AgregarProducto.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-plus-box"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-plus-box"></i></span>
                     <span class="menu-title">Agregar producto</span>
                 </a>
             </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Vendidos.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-trending-up"></i>
-                    </span>
+                    <span class="menu-icon"><i class="mdi mdi-trending-up"></i></span>
                     <span class="menu-title">Lo mas Vendido</span>
                 </a>
             </li>
             ' : '') . '
 
-            <li class="nav-item menu-items">
-                <a class="nav-link" href="/RepoProyectoG5/View/info/Contactenos.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-phone"></i>
-                    </span>
-                    <span class="menu-title">Contactenos</span>
-                </a>
-            </li>
-
-            <li class="nav-item menu-items">
-                <a class="nav-link" href="/RepoProyectoG5/View/info/SobreNosotros.php">
-                    <span class="menu-icon">
-                        <i class="mdi mdi-information"></i>
-                    </span>
-                    <span class="menu-title">Sobre Nosotros</span>
-                </a>
-            </li>
-
         </ul>
     </nav>';
 }
+
 
 function ShowNav()
 {
@@ -281,8 +259,8 @@ function ShowNav()
         $avatar = "../imagenes/admin.png";
     }
 
-    $nombre     = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
-    $apellido1  = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
+    $nombre = isset($_SESSION["nombre"]) ? $_SESSION["nombre"] : "";
+    $apellido1 = isset($_SESSION["apellido1"]) ? $_SESSION["apellido1"] : "";
     $nombreCompleto = trim($nombre . " " . $apellido1);
 
     echo '
