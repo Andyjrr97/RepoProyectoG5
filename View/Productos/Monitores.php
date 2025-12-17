@@ -15,7 +15,7 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
     exit;
 }
 
-$categoriaMonitores = 6;
+$categoriaMonitores = 4;
 
 $productos         = ObtenerProductosPorCategoria($categoriaMonitores, $minPrecio, $maxPrecio, $marcasSeleccionadas);
 $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaMonitores);
@@ -133,7 +133,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaMonitores);
                                         <?php foreach ($marcasDisponibles as $m): 
                                             $marca   = $m['marca'];
                                             $checked = in_array($marca, $marcasSeleccionadas) ? 'checked' : '';
-                                        ?>
+                                            ?>
                                             <label class="filtro-marca-label">
                                                 <input type="checkbox"
                                                        name="marca[]"
