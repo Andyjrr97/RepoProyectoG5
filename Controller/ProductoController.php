@@ -20,3 +20,12 @@ function ObtenerMarcasPorCategoria($categoriaId)
 {
     return ListarMarcasPorCategoriaModel($categoriaId);
 }
+
+/* ============================
+   NUEVO: Función que llama el View
+   ============================ */
+function AgregarProducto($nombre, $descripcion, $marca, $precio, $stock, $estado, $categoria, $descripcionDetallada, $imagen)
+{
+    return AgregarProductoModel($nombre, $descripcion, $marca, $precio, $stock, $estado, $categoria, $descripcionDetallada, $imagen);
+}
+
