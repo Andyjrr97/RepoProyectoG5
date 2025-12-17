@@ -6,6 +6,7 @@
       session_start();
   }
 
+  // SOLO valida que exista sesión (cualquier usuario)
   if (!isset($_SESSION["ced_usuario"])) {
       header("Location: ../../View/Inicio/IniciarSesion.php?e=sesion");
       exit;
@@ -194,7 +195,6 @@
 
 <?php if (isset($_POST["btnActualizarSeguridad"])): ?>
 <script>
-
   $(document).ready(function () {
       $('#modalSeguridad').modal('show');
   });
@@ -203,3 +203,4 @@
 
 </body>
 </html>
+
