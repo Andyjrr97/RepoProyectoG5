@@ -2,6 +2,17 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
+/* ================== RESTRICCIÓN (SOLO CLIENTE) ================== */
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
+    header("Location: /RepoProyectoG5/View/Inicio/Principal.php");
+    exit;
+}
+/* ================================================================ */
+
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
 $marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
@@ -16,6 +27,10 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 <html lang="es">
 <?php ShowCSS(); ?>
 <body>
+
+<!-- IMPORTANTE: iframe oculto para que el POST NO cambie de página -->
+<iframe name="iframe_carrito" style="display:none;"></iframe>
+
 <div class="container-scroller">
 
 <?php ShowMenu(); ?>
@@ -147,19 +162,28 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
     Disponibles: <?= $p['stock'] ?>
 </p>
 
-<div class="cantidad-group">
-    <input type="number"
-           id="cant<?= $p['id_producto'] ?>"
-           min="1"
-           max="<?= $p['stock'] ?>"
-           value="1"
-           class="form-control">
-</div>
+<form method="POST"
+      action="/RepoProyectoG5/Controller/agregar_carrito.php"
+      target="iframe_carrito">
 
-<button class="btn btn-success btn-sm"
-        onclick="agregarCarrito(<?= $p['id_producto'] ?>)">
-    Agregar al carrito
-</button>
+    <input type="hidden" name="id_producto" value="<?= $p['id_producto'] ?>">
+    <input type="hidden" name="nombre" value="<?= htmlspecialchars($p['nombre']) ?>">
+    <input type="hidden" name="precio" value="<?= $p['precio'] ?>">
+    <input type="hidden" name="stock" value="<?= $p['stock'] ?>">
+
+    <div class="cantidad-group">
+        <input type="number"
+               name="cantidad"
+               min="1"
+               max="<?= $p['stock'] ?>"
+               value="1"
+               class="form-control">
+    </div>
+
+    <button class="btn btn-success btn-sm">
+        Agregar al carrito
+    </button>
+</form>
 
 <a href="../Productos/DetalleProducto.php?id=<?= $p['id_producto'] ?>"
    class="btn btn-primary btn-sm mt-2">
@@ -184,18 +208,6 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComputadoras);
 <?php ShowJS(); ?>
 
 <script>
-function agregarCarrito(id){
-    let cant = document.getElementById('cant'+id).value;
-
-    fetch('../View/ajax/agregar_carrito.php',{
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:'id='+id+'&cantidad='+cant
-    })
-    .then(r=>r.json())
-    .then(d=>alert(d.mensaje));
-}
-
 $(function(){
     $("#slider-precio").slider({
         range:true,
