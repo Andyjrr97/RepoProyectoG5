@@ -19,12 +19,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php
         <div class="main-panel">
             <div class="content-wrapper">
 
-                <!-- ===============================
-                     AQUÍ EMPIEZAS A ESCRIBIR TU CÓDIGO
-                     =============================== -->
-
-                <!-- =============================== -->
-
             </div>
 
             <?php ShowFooter(); ?>
