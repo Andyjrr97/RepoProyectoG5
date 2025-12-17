@@ -11,15 +11,11 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
     exit;
 }
 
-// Configuración de la categoría
 $categoriaId = 4;
-
-// Captura de filtros
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
 $marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
 
-// Obtención de datos desde el controlador
 $productos = ObtenerProductosPorCategoria($categoriaId, $minPrecio, $maxPrecio, $marcasSeleccionadas);
 $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
 ?>
@@ -41,36 +37,12 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
             <div class="content-wrapper">
 
                 <style>
-                    .filtro-card {
-                        background: rgba(0, 0, 0, 0.75);
-                        border-radius: 15px;
-                        padding: 20px;
-                        color: #fff;
-                    }
-                    .producto-card {
-                        background: #fff;
-                        border-radius: 15px;
-                        box-shadow: 0 4px 12px rgba(0,0,0,.15);
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    .producto-card img {
-                        width: 150px;
-                        height: 150px;
-                        object-fit: contain;
-                        margin: 20px auto;
-                        display: block;
-                    }
-                    .card-body {
-                        display: flex;
-                        flex-direction: column;
-                        flex-grow: 1;
-                        text-align: center;
-                    }
-                    .acciones {
-                        margin-top: auto;
-                    }
+                    .filtro-card { background: rgba(0, 0, 0, 0.75); border-radius: 15px; padding: 20px; color: #fff; }
+                    .producto-card { background: #fff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,.15); height: 100%; display: flex; flex-direction: column; }
+                    .producto-card img { width: 100%; height: 180px; object-fit: contain; padding: 10px; }
+                    .card-body { display: flex; flex-direction: column; flex-grow: 1; text-align: center; color: #333; }
+                    .acciones { margin-top: auto; }
+                    .text-white-custom { color: white !important; }
                 </style>
 
                 <h3 class="text-white mb-4">Monitores</h3>
@@ -79,7 +51,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                     <div class="col-md-3">
                         <div class="filtro-card">
                             <form method="GET" action="Monitores.php">
-                                <h4>Filtros</h4>
+                                <h4 class="text-white-custom">Filtrar</h4>
                                 <hr style="border-top: 1px solid rgba(255,255,255,0.2);">
                                 
                                 <label>Precio (USD):</label>
@@ -94,7 +66,7 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                                     <div style="max-height: 200px; overflow-y: auto;">
                                         <?php foreach ($marcasDisponibles as $m): ?>
                                             <div class="form-check">
-                                                <label class="form-check-label text-white">
+                                                <label class="form-check-label text-white-custom">
                                                     <input type="checkbox" name="marca[]" value="<?php echo htmlspecialchars($m['marca']); ?>" 
                                                     <?php echo in_array($m['marca'], $marcasSeleccionadas) ? 'checked' : ''; ?>>
                                                     <?php echo htmlspecialchars($m['marca']); ?>
@@ -113,18 +85,18 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaId);
                     <div class="col-md-9">
                         <div class="row">
                             <?php if (empty($productos)): ?>
-                                <div class="col-12 text-center">
-                                    <div class="alert alert-info">
-                                        No se encontraron monitores. Verifique que el estado sea 'Activo' en la base de datos.
+                                <div class="col-12">
+                                    <div class="alert alert-info text-center">
+                                        No se encontraron monitores. Verifique los filtros.
                                     </div>
                                 </div>
                             <?php else: ?>
                                 <?php foreach ($productos as $p): ?>
                                     <div class="col-md-6 col-lg-4 mb-4">
                                         <div class="card producto-card">
-                                            <img src="../imagenes/<?php echo htmlspecialchars($p['imagen']); ?>" alt="Imagen del Producto">
+                                            <img src="../<?php echo htmlspecialchars($p['imagen']); ?>" alt="Monitor">
                                             <div class="card-body">
-                                                <h5 class="card-title"><?php echo htmlspecialchars($p['nombre']); ?></h5>
+                                                <h5 class="font-weight-bold"><?php echo htmlspecialchars($p['nombre']); ?></h5>
                                                 <p class="text-muted small"><?php echo htmlspecialchars($p['descripcion']); ?></p>
                                                 <p class="mb-1"><b>Marca:</b> <?php echo htmlspecialchars($p['marca']); ?></p>
                                                 <h4 class="text-primary font-weight-bold">$<?php echo number_format($p['precio'], 2); ?></h4>
