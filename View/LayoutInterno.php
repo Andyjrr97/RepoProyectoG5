@@ -173,6 +173,7 @@ function ShowMenu()
                 <span class="nav-link">Navigation</span>
             </li>
 
+            ' . ($rol === "Cliente" ? '
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Computadoras.php">
                     <span class="menu-icon">
@@ -208,7 +209,7 @@ function ShowMenu()
                     <span class="menu-title">Accesorios</span>
                 </a>
             </li>
-         
+
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Monitores.php">
                     <span class="menu-icon">
@@ -216,16 +217,27 @@ function ShowMenu()
                     </span>
                     <span class="menu-title">Monitores</span>
                 </a>
-            </li>            
-            <li class="nav-item menu-items">
-    <a class="nav-link" href="/RepoProyectoG5/View/Carrito/Carrito.php">
-        <span class="menu-icon">
-            <i class="mdi mdi-cart"></i>
-        </span>
-        <span class="menu-title">Carrito</span>
-    </a>
-</li>
+            </li>
 
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/RepoProyectoG5/View/Carrito/Carrito.php">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-cart"></i>
+                    </span>
+                    <span class="menu-title">Carrito</span>
+                </a>
+            </li>
+            ' : '') . '
+
+            ' . ($rol === "Administrador" ? '
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/RepoProyectoG5/View/Productos/AgregarProducto.php">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-plus-box"></i>
+                    </span>
+                    <span class="menu-title">Agregar producto</span>
+                </a>
+            </li>
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/Productos/Vendidos.php">
@@ -235,6 +247,7 @@ function ShowMenu()
                     <span class="menu-title">Lo mas Vendido</span>
                 </a>
             </li>
+            ' : '') . '
 
             <li class="nav-item menu-items">
                 <a class="nav-link" href="/RepoProyectoG5/View/info/Contactenos.php">
