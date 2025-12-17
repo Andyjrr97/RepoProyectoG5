@@ -2,13 +2,22 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
+/* ================== RESTRICCIÓN (SOLO CLIENTE) ================== */
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
+    header("Location: /RepoProyectoG5/View/Inicio/Principal.php");
+    exit;
+}
+/* ================================================================ */
+
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
 $marcasSeleccionadas = isset($_GET['marca']) ? (array)$_GET['marca'] : [];
 
-
 $categoriaComponentes = 5;
-
 
 $productos         = ObtenerProductosPorCategoria($categoriaComponentes, $minPrecio, $maxPrecio, $marcasSeleccionadas);
 $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComponentes);
@@ -18,6 +27,10 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComponentes);
 <html lang="es">
 <?php ShowCSS(); ?>
 <body>
+
+<!-- IMPORTANTE: iframe oculto para que el POST NO cambie de página -->
+<iframe name="iframe_carrito" style="display:none;"></iframe>
+
 <div class="container-scroller">
 
     <?php ShowMenu(); ?>
@@ -121,14 +134,14 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComponentes);
                                     <hr>
                                     <label>Por marca:</label>
                                     <div style="max-height: 160px; overflow-y:auto; margin-top:5px;">
-                                        <?php foreach ($marcasDisponibles as $m): 
+                                        <?php foreach ($marcasDisponibles as $m):
                                             $marca   = $m['marca'];
                                             $checked = in_array($marca, $marcasSeleccionadas) ? 'checked' : '';
                                         ?>
                                             <label class="filtro-marca-label">
-                                                <input type="checkbox" 
-                                                       name="marca[]" 
-                                                       value="<?php echo htmlspecialchars($marca); ?>" 
+                                                <input type="checkbox"
+                                                       name="marca[]"
+                                                       value="<?php echo htmlspecialchars($marca); ?>"
                                                        <?php echo $checked; ?>>
                                                 <span><?php echo htmlspecialchars($marca); ?></span>
                                             </label>
@@ -182,9 +195,37 @@ $marcasDisponibles = ObtenerMarcasPorCategoria($categoriaComponentes);
                                                     <?php echo htmlspecialchars($prod['descripcion']); ?>
                                                 </p>
 
+                                                <p style="color:#555; font-size:0.85rem; margin-bottom:8px;">
+                                                    Disponibles: <?php echo $prod['stock']; ?>
+                                                </p>
+
                                                 <h5 class="text-primary font-weight-bold mb-3">
                                                     $<?php echo number_format($prod['precio'], 2); ?>
                                                 </h5>
+
+                                                <!-- AGREGAR AL CARRITO (SIN CAMBIAR DE PÁGINA) -->
+                                                <form method="POST"
+                                                      action="/RepoProyectoG5/Controller/agregar_carrito.php"
+                                                      target="iframe_carrito"
+                                                      style="margin-bottom:10px;">
+
+                                                    <input type="hidden" name="id_producto" value="<?php echo $prod['id_producto']; ?>">
+                                                    <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($prod['nombre']); ?>">
+                                                    <input type="hidden" name="precio" value="<?php echo $prod['precio']; ?>">
+                                                    <input type="hidden" name="stock" value="<?php echo $prod['stock']; ?>">
+
+                                                    <input type="number"
+                                                           name="cantidad"
+                                                           min="1"
+                                                           max="<?php echo $prod['stock']; ?>"
+                                                           value="1"
+                                                           class="form-control mb-2"
+                                                           style="max-width:120px; margin:0 auto;">
+
+                                                    <button class="btn btn-success btn-sm btn-block">
+                                                        Agregar al carrito
+                                                    </button>
+                                                </form>
 
                                                 <a href="../Productos/DetalleProducto.php?id=<?php echo $prod['id_producto']; ?> "
                                                    class="btn btn-primary btn-sm">
