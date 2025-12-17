@@ -51,4 +51,3 @@ $total = CarritoController::total();
 <?php ShowJS(); ?>
 </body>
 </html>
-
