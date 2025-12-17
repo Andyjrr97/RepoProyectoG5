@@ -2,7 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/View/LayoutInterno.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoProyectoG5/Controller/ProductoController.php';
 
-/* ================== RESTRICCIÓN (SOLO CLIENTE) ================== */
+/
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,7 +11,7 @@ if (!isset($_SESSION["rol"]) || $_SESSION["rol"] !== "Cliente") {
     header("Location: /RepoProyectoG5/View/Inicio/Principal.php");
     exit;
 }
-/* ================================================================ */
+
 
 $minPrecio = isset($_GET['min']) && $_GET['min'] !== '' ? (float)$_GET['min'] : 0;
 $maxPrecio = isset($_GET['max']) && $_GET['max'] !== '' ? (float)$_GET['max'] : 1500;
